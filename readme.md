@@ -1,19 +1,19 @@
-<img align="center" src="./doc/snapshot.png" />
+<img align="center" width=600 src="./doc/snapshot.png" />
 
-soui4js Ä£¿é½éÉÜ
-depends: ÕâÊÇsoui4jsµÄÒÀÀµ¿â
-°üº¬£º
-1 quickjsÊÇ×÷ÕßĞŞ¸ÄºóµÄquickjs°æ±¾£¬Ô´´úÂë£ºhttps://github.com/setoutsoft/quickjs_win ·ÖÖ§£ºwindows
-2 sdl2, sdl2.15µÄÔ¤±àÒë¿â¡£https://github.com/libsdl-org/SDL
-3 vodplayer, Ö±²¥²¥·ÅÆ÷ÄÚºË£¬Ö»×ödemoÑİÊ¾£¬²»Ìá¹©Ô´´úÂë¡£
+soui4js æ¨¡å—ä»‹ç»
+depends: è¿™æ˜¯soui4jsçš„ä¾èµ–åº“
+åŒ…å«ï¼š
+1 quickjsæ˜¯ä½œè€…ä¿®æ”¹åçš„quickjsç‰ˆæœ¬ï¼Œæºä»£ç ï¼šhttps://github.com/setoutsoft/quickjs_win åˆ†æ”¯ï¼šwindows
+2 sdl2, sdl2.15çš„é¢„ç¼–è¯‘åº“ã€‚https://github.com/libsdl-org/SDL
+3 vodplayer, ç›´æ’­æ’­æ”¾å™¨å†…æ ¸ï¼Œåªåšdemoæ¼”ç¤ºï¼Œä¸æä¾›æºä»£ç ã€‚
 
-qjsbind: ÔÚduijs²Ö¿âµÄjsbind»ù´¡ÉÏ¸ÄĞ´µÄµ¼³ösouiÄ£¿éµ½jsµÄbind¿â£¬Ä¿Ç°»ù±¾Âú×ãÁËÕâ¸öÏîÄ¿µÄĞèÇó£¬µ«ÊÇ´úÂë»¹²»¹»ÓÅÑÅ£¬»¶Ó­¸ßÊÖ¼ÌĞøÓÅ»¯¡£
-soui4js£ºÕâÊÇ±¾ÏîÄ¿µÄºËĞÄÄ£¿é£¬ÒÀÀµqjsbind£¬½«soui4µÄÓÃ»§½Ó¿Ú²ãÄ£¿éÈ«²¿µ¼³öµ½js¿Õ¼ä¡£
-exctrl: ÑİÊ¾ÔÚjsÊÇµ¼³ösouiÀ©Õ¹¿Ø¼şµÄÄ£¿é¡£
-jsvodplayer£ºvodplayerµ¼³öµ½jsµÄdllÄ£¿é¡£
-sliveplayer: ¶àÆ½Ì¨¾ÛºÏÖ±²¥Á÷²¥·ÅÆ÷£¬Ö»×÷ÎªÑİÊ¾soui4jsÊ¹ÓÃ¡£
+qjsbind: åœ¨duijsä»“åº“çš„jsbindåŸºç¡€ä¸Šæ”¹å†™çš„å¯¼å‡ºsouiæ¨¡å—åˆ°jsçš„bindåº“ï¼Œç›®å‰åŸºæœ¬æ»¡è¶³äº†è¿™ä¸ªé¡¹ç›®çš„éœ€æ±‚ï¼Œä½†æ˜¯ä»£ç è¿˜ä¸å¤Ÿä¼˜é›…ï¼Œæ¬¢è¿é«˜æ‰‹ç»§ç»­ä¼˜åŒ–ã€‚
+soui4jsï¼šè¿™æ˜¯æœ¬é¡¹ç›®çš„æ ¸å¿ƒæ¨¡å—ï¼Œä¾èµ–qjsbindï¼Œå°†soui4çš„ç”¨æˆ·æ¥å£å±‚æ¨¡å—å…¨éƒ¨å¯¼å‡ºåˆ°jsç©ºé—´ã€‚
+exctrl: æ¼”ç¤ºåœ¨jsæ˜¯å¯¼å‡ºsouiæ‰©å±•æ§ä»¶çš„æ¨¡å—ã€‚
+jsvodplayerï¼švodplayerå¯¼å‡ºåˆ°jsçš„dllæ¨¡å—ã€‚
+sliveplayer: å¤šå¹³å°èšåˆç›´æ’­æµæ’­æ”¾å™¨ï¼Œåªä½œä¸ºæ¼”ç¤ºsoui4jsä½¿ç”¨ã€‚
 
-×¢Òâ£º
-±¾ÏîÄ¿ÒÀÀµsoui4, ±àÒë±¾ÏîÄ¿Ç°ÏÈÀ­È¡soui4´úÂë£¬²¢°²×°soui4Ïòµ¼£¨Ïòµ¼°²×°ºó»áÔÚ»·¾³±äÁ¿ÖĞÔö¼ÓSOUI4PATH,±¾ÏîÄ¿Í¨¹ıÕâ¸ö»·¾³±äÁ¿À´ÕÒµ½soui4µÄ´úÂë¼°lib)
-soui4Ô´´úÂë£ºhttps://github.com/soui4/soui
-releaseÄ¿Â¼°üº¬Ö±½Ó¿ÉÔËĞĞµÄexe¼°dll, ÒµÎñÂß¼­ÔÚmain.jsÖĞ£¬³ÌĞòÖĞÊ¹ÓÃµ½µÄ²¼¾Ö×ÊÔ´ÔÚuires.zipÖĞ
+æ³¨æ„ï¼š
+æœ¬é¡¹ç›®ä¾èµ–soui4, ç¼–è¯‘æœ¬é¡¹ç›®å‰å…ˆæ‹‰å–soui4ä»£ç ï¼Œå¹¶å®‰è£…soui4å‘å¯¼ï¼ˆå‘å¯¼å®‰è£…åä¼šåœ¨ç¯å¢ƒå˜é‡ä¸­å¢åŠ SOUI4PATH,æœ¬é¡¹ç›®é€šè¿‡è¿™ä¸ªç¯å¢ƒå˜é‡æ¥æ‰¾åˆ°soui4çš„ä»£ç åŠlib)
+soui4æºä»£ç ï¼šhttps://github.com/soui4/soui
+releaseç›®å½•åŒ…å«ç›´æ¥å¯è¿è¡Œçš„exeåŠdll, ä¸šåŠ¡é€»è¾‘åœ¨main.jsä¸­ï¼Œç¨‹åºä¸­ä½¿ç”¨åˆ°çš„å¸ƒå±€èµ„æºåœ¨uires.zipä¸­
