@@ -17,3 +17,4 @@ sliveplayer: 多平台聚合直播流播放器，只作为演示soui4js使用。
 本项目依赖soui4, 编译本项目前先拉取soui4代码，并安装soui4向导（向导安装后会在环境变量中增加SOUI4PATH,本项目通过这个环境变量来找到soui4的代码及lib)
 soui4源代码：https://github.com/soui4/soui
 release目录包含直接可运行的exe及dll, 业务逻辑在main.js中，程序中使用到的布局资源在uires.zip中
+如需运行debug版本，请将release目录下所有非编译生成的文件复制一份到debug目录。
