@@ -93,7 +93,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>.;..\qjsbind;$(SOUI4PATH)\config;$(SOUI4PATH)\components;$(SOUI4PATH)\SOUI\include;$(SOUI4PATH)\utilities\include;..\depends\quickjs\include;..\depends\vodplayer\include;..\depends\sdl2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\qjsbind;..\depends\soui4\config;..\depends\soui4\components;..\depends\soui4\SOUI\include;..\depends\soui4\utilities\include;..\depends\quickjs\include;..\depends\vodplayer\include;..\depends\sdl2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_USRDLL;STRICT;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BrowseInformation>true</BrowseInformation>
@@ -103,8 +103,8 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>$(SOUI4PATH)\bin;$(OutDir);..\depends\quickjs\lib\debug\x86;..\depends\sdl2\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>quickjs.lib;qjsbind.lib;utilities4d.lib;soui4d.lib;sdl2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\depends\soui4\lib;$(OutDir);..\depends\quickjs\lib\debug\x86;..\depends\sdl2\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>quickjs.lib;qjsbind.lib;utilities4.lib;soui4.lib;sdl2.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
     <ResourceCompile>
@@ -118,7 +118,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>.;..\qjsbind;$(SOUI4PATH)\config;$(SOUI4PATH)\components;$(SOUI4PATH)\SOUI\include;$(SOUI4PATH)\utilities\include;..\depends\quickjs\include;..\depends\vodplayer\include;..\depends\sdl2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\qjsbind;..\depends\soui4\config;..\depends\soui4\components;..\depends\soui4\SOUI\include;..\depends\soui4\utilities\include;..\depends\quickjs\include;..\depends\vodplayer\include;..\depends\sdl2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_USRDLL;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -127,7 +127,7 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>$(SOUI4PATH)\bin;$(OutDir);..\depends\quickjs\lib\release\x86;..\depends\sdl2\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\depends\soui4\lib;$(OutDir);..\depends\quickjs\lib\release\x86;..\depends\sdl2\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>quickjs.lib;qjsbind.lib;utilities4.lib;soui4.lib;sdl2.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>

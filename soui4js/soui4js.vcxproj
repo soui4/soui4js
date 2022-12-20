@@ -55,7 +55,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>.;..\qjsbind;..\depends\quickjs\include;$(SOUI4PATH)\soui\include;$(SOUI4PATH)\utilities\include;$(SOUI4PATH)\config;$(SOUI4PATH)\components;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\qjsbind;..\depends\quickjs\include;..\depends\soui4\soui\include;..\depends\soui4\utilities\include;..\depends\soui4\config;..\depends\soui4\components;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
       <AssemblerListingLocation>..\..\obj\release\</AssemblerListingLocation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -78,7 +78,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>quickjs.lib;qjsbind.lib;soui4.lib;utilities4.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SOUI4PATH)\bin;$(OutDir);..\depends\quickjs\lib\release\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\depends\soui4\lib;$(OutDir);..\depends\quickjs\lib\release\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <LinkTimeCodeGeneration />
@@ -100,7 +100,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>.;..\qjsbind;..\depends\quickjs\include;$(SOUI4PATH)\soui\include;$(SOUI4PATH)\utilities\include;$(SOUI4PATH)\config;$(SOUI4PATH)\components;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\qjsbind;..\depends\quickjs\include;..\depends\soui4\soui\include;..\depends\soui4\utilities\include;..\depends\soui4\config;..\depends\soui4\components;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
       <AssemblerListingLocation>..\..\obj\debug\</AssemblerListingLocation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -122,11 +122,11 @@
       <WarningLevel>Level3</WarningLevel>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>quickjs.lib;qjsbind.lib;soui4d.lib;utilities4d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SOUI4PATH)\bin;$(OutDir);..\depends\quickjs\lib\debug\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>quickjs.lib;qjsbind.lib;soui4.lib;utilities4.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\depends\soui4\lib;$(OutDir);..\depends\quickjs\lib\debug\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <LinkTimeCodeGeneration />
-      <OutputFile>$(OutDir)soui4jsd.dll</OutputFile>
+      <OutputFile>$(OutDir)soui4js.dll</OutputFile>
       <ProgramDatabaseFile />
       <SubSystem>Windows</SubSystem>
       <SuppressStartupBanner>true</SuppressStartupBanner>
