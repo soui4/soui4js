@@ -258,8 +258,8 @@ class RoomTvAdapter extends soui4.STvAdapter{
 
 	onRoomListResp(ctx,code,resp){
 		let xml = new soui4.SXmlDoc();
-		//let res = xml.LoadFile("d:\\roomlist.xml",116,0);//116=parse_default
-		let res = xml.LoadString(resp,116);//116=parse_default
+		let res = xml.LoadFile("d:\\roomlist.xml",116,0);//116=parse_default
+		//let res = xml.LoadString(resp,116);//116=parse_default
 		this.roomList = []; //prepare a room list.
 		if(res!=0){
 			let xmlPlatform = xml.Root().FirstChild().FirstChild();
@@ -699,6 +699,12 @@ class CMainDlg extends soui4.JsHostDialog {
 		//this.vodPlayer.SetVideoFilter("scale=405:720,rotate=PI/2");		
 		//this.vodPlayer.SetVideoFilter("rotate=PI/2");
 	}
+	onBtnStartRecord(){
+		this.vodPlayer.StartRecord("d:\\record.mp4");
+	}
+	onBtnStopRecord(){
+		this.vodPlayer.StopRecord();
+	}
 	onInit(){
 		soui4.log("on init dialog");
 		this.EnableDragDrop();
@@ -715,6 +721,8 @@ class CMainDlg extends soui4.JsHostDialog {
 		this.connect("btn_setFilter",10000, this.onSetFilter);
 		this.connect("btn_reflesh_room",10000, this.onBtnRefleshRoom);
 		this.connect("btn_add_room",10000,this.onBtnAddRoom);
+		this.connect("btn_record_start",10000,this.onBtnStartRecord);
+		this.connect("btn_record_stop",10000,this.onBtnStopRecord);
 		//init room treeview.
 		let room_tv = this.FindIChildByName("room_tv");
 		let room_itv = soui4.QiITreeView(room_tv);
@@ -841,11 +849,11 @@ function main(inst,workDir,args)
 	soui4.log(workDir);
 	let theApp = soui4.GetApp();
 	let souiFac = soui4.CreateSouiFactory();
-	/*
+	//*
 	let resProvider = souiFac.CreateResProvider(1);
 	soui4.InitFileResProvider(resProvider,workDir + "\\uires");
 	//*/
-	//*
+	/*
 	// show how to load resource from a zip file
 	let resProvider = soui4.CreateZipResProvider(theApp,workDir +"\\uires.zip","souizip");
 	if(resProvider === 0){

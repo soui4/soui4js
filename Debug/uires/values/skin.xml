@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<skin>
+  <gradation name="skin_active" colorFrom="rgb(15,17,20)" colorTo="rgb(153,180,209)" vertical="false"/>
+  <gradation name="skin_inactive" colorFrom="rgb(191,205,219)" colorTo="rgb(191,205,219)" vertical="false"/>
+  <imglist name="skin_curtain_left" src="img:png_left" filterLevel="high"/>
+  <imglist name="skin_curtain_right" src="img:png_right" filterLevel="high"/>
+  
+    <imglist name="btn_refresh" src="img:btn_refresh" states="3"/>
+    <imglist name="btn_add_room" src="img:btn_add_room" states="3"/>
+  <imglist name="skin_girl"	src="img:png_girl" alpha="240" filterLevel="high"/>
+    <imglist name="skin_tree_icon" src="img:png_treeicon" states="5" />
+    <imgframe name="skin_room_bookmark" src="img:png_room_bookmark"  margin="0,26,0,26"/>
+	<imgframe name="skin_item_bk" src="img:png_item_bk" states="3" margin="2,2,2,2"/>
+  <imglist name="skin_hot" src="img:png_hot"  states="6"/>
+	<imglist name="skin_logo" src="img:png_logo" />
+</skin>
