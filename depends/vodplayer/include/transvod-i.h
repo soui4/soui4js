@@ -300,6 +300,9 @@ DECLARE_INTERFACE_(ITransVod, IUnknown) {
     STDMETHOD_(void, setVideoFilter)(THIS_ const char* filterDesc) PURE;
 
     STDMETHOD_(void, selectAudioTrack)(THIS_ int iTrack) PURE;
+
+    STDMETHOD_(BOOL, startMp4Muxer)(THIS_ const char* pszFileName) PURE;
+    STDMETHOD_(void, stopMp4Muxer)(THIS) PURE;
 };
 
 #ifdef __cplusplus
