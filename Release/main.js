@@ -463,6 +463,8 @@ class CMainDlg extends soui4.JsHostDialog {
 		this.vodPlayer.onStateChanged = this.onStateChanged;
 		this.vodPlayer.onDuration=this.onDuration;
 		this.vodPlayer.onPlayPosition = this.onPlayPosition;
+		this.vodPlayer.onRecordStart = this.onRecordStart;
+		this.vodPlayer.onRecordStop = this.onRecordStop;
 		let sdlPresenter = jsplayer.CreateSdlPresenter(this);
 		this.SetPresenter(sdlPresenter);
 		this.vodPlayer.Init(sdlPresenter);
@@ -699,6 +701,20 @@ class CMainDlg extends soui4.JsHostDialog {
 		//this.vodPlayer.SetVideoFilter("scale=405:720,rotate=PI/2");		
 		//this.vodPlayer.SetVideoFilter("rotate=PI/2");
 	}
+	onRecordStart(recordName){
+		this.FindIChildByName("btn_record_start").SetVisible(false,false);
+		this.FindIChildByName("btn_record_stop").SetVisible(true,true);
+	}
+	onBtnStartRecord(){
+		this.vodPlayer.StartRecord("d:\\record.mp4");
+	}
+	onRecordStop(){
+		this.FindIChildByName("btn_record_start").SetVisible(true,false);
+		this.FindIChildByName("btn_record_stop").SetVisible(false,true);
+	}
+	onBtnStopRecord(){
+		this.vodPlayer.StopRecord();
+	}
 	onInit(){
 		soui4.log("on init dialog");
 		this.EnableDragDrop();
@@ -715,6 +731,8 @@ class CMainDlg extends soui4.JsHostDialog {
 		this.connect("btn_setFilter",10000, this.onSetFilter);
 		this.connect("btn_reflesh_room",10000, this.onBtnRefleshRoom);
 		this.connect("btn_add_room",10000,this.onBtnAddRoom);
+		this.connect("btn_record_start",10000,this.onBtnStartRecord);
+		this.connect("btn_record_stop",10000,this.onBtnStopRecord);
 		//init room treeview.
 		let room_tv = this.FindIChildByName("room_tv");
 		let room_itv = soui4.QiITreeView(room_tv);

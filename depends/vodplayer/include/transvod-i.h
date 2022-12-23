@@ -235,6 +235,9 @@ DECLARE_INTERFACE(ITransVodListener) {
     (THIS_ uint32_t alt, uint32_t rtf, uint32_t rvf, uint32_t rvff, uint32_t rcf, uint32_t rcff) PURE;
     STDMETHOD_(void, onBitrateReport)
         (THIS_ uint32_t audioBitrate,uint32_t videoBitrate) PURE;
+
+    STDMETHOD_(void, onRecordStart)(THIS_ LPCSTR filename) PURE;
+    STDMETHOD_(void, onRecordStop)(THIS) PURE;
 };
 
 typedef void (*funWriteLogCallback)(const char *func, int line, int level, const char *tag, const char *text);

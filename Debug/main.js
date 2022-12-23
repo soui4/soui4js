@@ -258,8 +258,8 @@ class RoomTvAdapter extends soui4.STvAdapter{
 
 	onRoomListResp(ctx,code,resp){
 		let xml = new soui4.SXmlDoc();
-		let res = xml.LoadFile("d:\\roomlist.xml",116,0);//116=parse_default
-		//let res = xml.LoadString(resp,116);//116=parse_default
+		//let res = xml.LoadFile("d:\\roomlist.xml",116,0);//116=parse_default
+		let res = xml.LoadString(resp,116);//116=parse_default
 		this.roomList = []; //prepare a room list.
 		if(res!=0){
 			let xmlPlatform = xml.Root().FirstChild().FirstChild();
@@ -463,6 +463,8 @@ class CMainDlg extends soui4.JsHostDialog {
 		this.vodPlayer.onStateChanged = this.onStateChanged;
 		this.vodPlayer.onDuration=this.onDuration;
 		this.vodPlayer.onPlayPosition = this.onPlayPosition;
+		this.vodPlayer.onRecordStart = this.onRecordStart;
+		this.vodPlayer.onRecordStop = this.onRecordStop;
 		let sdlPresenter = jsplayer.CreateSdlPresenter(this);
 		this.SetPresenter(sdlPresenter);
 		this.vodPlayer.Init(sdlPresenter);
@@ -699,8 +701,16 @@ class CMainDlg extends soui4.JsHostDialog {
 		//this.vodPlayer.SetVideoFilter("scale=405:720,rotate=PI/2");		
 		//this.vodPlayer.SetVideoFilter("rotate=PI/2");
 	}
+	onRecordStart(recordName){
+		this.FindIChildByName("btn_record_start").SetVisible(false,false);
+		this.FindIChildByName("btn_record_stop").SetVisible(true,true);
+	}
 	onBtnStartRecord(){
 		this.vodPlayer.StartRecord("d:\\record.mp4");
+	}
+	onRecordStop(){
+		this.FindIChildByName("btn_record_start").SetVisible(true,false);
+		this.FindIChildByName("btn_record_stop").SetVisible(false,true);
 	}
 	onBtnStopRecord(){
 		this.vodPlayer.StopRecord();
