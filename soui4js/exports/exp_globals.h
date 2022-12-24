@@ -3,10 +3,11 @@
 #include <interface/SFactory-i.h>
 #include "SFuncSlot.h"
 #include <commgr2.h>
-#include <resprovider-zip\zipresprovider-param.h>
-#include <resprovider-7zip\zip7resprovider-param.h>
+#include <resprovider-zip/zipresprovider-param.h>
+#include <resprovider-7zip/zip7resprovider-param.h>
 #include <shellapi.h>
 #include "md5.h"
+#include "souidlgs.h"
 
 void Slog(const char* szLog) {
 	SStringW str = S_CA2W(szLog, CP_UTF8);
@@ -186,6 +187,80 @@ int DelDir(LPCSTR pszDir,BOOL bSilent) {
 	return SHFileOperation(&fileOp);
 }
 
+string PickFolder() {
+	SStringA ret;
+	bool bNewDialog = false;
+	do {
+		CShellFileOpenDialog dlg;
+		if (dlg.IsNull()) break;
+		DWORD dwOptions;
+		if (!SUCCEEDED(dlg.GetPtr()->GetOptions(&dwOptions)))
+			break;
+		if (!SUCCEEDED(dlg.GetPtr()->SetOptions(dwOptions | FOS_PICKFOLDERS)))
+			break;
+		bNewDialog = true;
+		if (IDOK == dlg.DoModal()) {
+			SStringW strDir;
+			dlg.GetFilePath(strDir);
+			ret = S_CW2A(strDir, CP_UTF8);
+		}
+	} while (false);
+	if (!bNewDialog) {
+		CFolderDialog folderDialog;
+		if (folderDialog.DoModal() == IDOK) {
+			SStringT folder = folderDialog.GetFolderPath();
+			ret = S_CT2A(folder, CP_UTF8);
+		}
+	}
+	return string(ret.c_str(), ret.GetLength());
+}
+
+string ShowFileSaveDialog(LPCSTR defName,LPCSTR defExt,LPCSTR pszFilter,int flag= OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT) {
+	SStringA ret;
+	CShellFileSaveDialog dlg;
+	if (!dlg.IsNull()) {
+		if (IDOK == dlg.DoModal()) {
+			SStringW strDir;
+			dlg.GetFilePath(strDir);
+			ret = S_CW2A(strDir, CP_UTF8);
+		}
+	}
+	else {
+		SStringT strExt = S_CA2T(defExt, CP_UTF8);
+		SStringT strName = S_CA2T(defName, CP_UTF8);
+		SStringT strFilter = S_CA2T(pszFilter, CP_UTF8);
+		CFileDialog dlg2(FALSE, strExt.c_str(), strName.c_str(), flag, strFilter.c_str());
+		if (dlg2.DoModal() == IDOK) {
+			SStringT strDir=dlg2.m_szFileName;
+			ret = S_CT2A(strDir, CP_UTF8);
+		}
+	}
+	return string(ret.c_str(), ret.GetLength());
+}
+	
+string ShowFileOpenDialog(LPCSTR defName, LPCSTR defExt, LPCSTR pszFilter, int flag=0) {
+	SStringA ret;
+	CShellFileOpenDialog dlg;
+	if (!dlg.IsNull()) {
+		if (IDOK == dlg.DoModal()) {
+			SStringW strDir;
+			dlg.GetFilePath(strDir);
+			ret = S_CW2A(strDir, CP_UTF8);
+		}
+	}
+	else {
+		SStringT strExt = S_CA2T(defExt, CP_UTF8);
+		SStringT strName = S_CA2T(defName, CP_UTF8);
+		SStringT strFilter = S_CA2T(pszFilter, CP_UTF8);
+		CFileDialog dlg2(TRUE, strExt.c_str(), strName.c_str(), flag, strFilter.c_str());
+		if (dlg2.DoModal() == IDOK) {
+			SStringT strDir = dlg2.m_szFileName;
+			ret = S_CT2A(strDir, CP_UTF8);
+		}
+	}
+	return string(ret.c_str(), ret.GetLength());
+}
+
 void Exp_Global(qjsbind::Module* module)
 {
 	module->ExportFunc("log", &Slog);
@@ -206,5 +281,8 @@ void Exp_Global(qjsbind::Module* module)
 	module->ExportFunc("Md5", &Md5);
 	module->ExportFunc("FileMd5", &FileMd5);
 	module->ExportFunc("DelDir", &DelDir);
+	module->ExportFunc("PickFolder", &PickFolder);
+	module->ExportFunc("ShowFileOpenDialog", &ShowFileOpenDialog);
+	module->ExportFunc("ShowFileSaveDialog", &ShowFileSaveDialog);
 
 }
