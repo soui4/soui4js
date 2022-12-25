@@ -81,6 +81,11 @@ namespace qjsbind {
 		return NewValue(*context, pThis->GetObj()->*(member)).Release();
 	}
 
+	template<typename T>
+	void SetValue(T& dst, const Value &src) {
+		dst = src;
+	}
+
 	template<typename T, typename MEM>
 	JSValue MemSet(JSContext* ctx, JSValueConst this_val, JSValueConst val, int magic)
 	{
@@ -96,7 +101,7 @@ namespace qjsbind {
 		Context* context = Context::get(ctx);
 		ContextState ctxState(ctx);
 		Value arg(ctx, val);
-		pThis->GetObj()->*(member) = arg;
+		SetValue(pThis->GetObj()->*(member), arg);
 		return JS_UNDEFINED;
 	}
 

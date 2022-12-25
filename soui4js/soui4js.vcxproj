@@ -146,7 +146,10 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="exp_soui.cpp" />
+    <ClCompile Include="exp_soui.cpp">
+      <ShowIncludes Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ShowIncludes>
+      <ShowIncludes Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ShowIncludes>
+    </ClCompile>
     <ClCompile Include="soui4js.cpp" />
     <ClCompile Include="stdafx.cpp">
       <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -200,7 +203,9 @@
     <ClInclude Include="exports\exp_SHostWnd.h" />
     <ClInclude Include="exports\exp_Worker.h" />
     <ClInclude Include="exports\md5.h" />
+    <ClInclude Include="exports\exp_FileOpenDlg.h" />
     <ClInclude Include="exports\SFuncSlot.h" />
+    <ClInclude Include="exports\souidlgs.h" />
     <ClInclude Include="exports\toobj.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="soui4js.h" />

@@ -134,4 +134,12 @@ namespace qjsbind {
 	}
 
 
+	template<>
+	void SetValue(SStringA & dst, const Value& src) {
+		dst = (LPCSTR)src;
+	}
+	template<>
+	void SetValue(std::string& dst, const Value& src) {
+		dst = (LPCSTR)src;
+	}
 }
