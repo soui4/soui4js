@@ -1117,7 +1117,7 @@ public: \
 			T* pT = static_cast<T*>(this);
 			ATLASSERT(pT->m_spFileDlg != NULL);
 
-			ATL::CComPtr<IShellItem> spItem;
+			SComPtr<IShellItem> spItem;
 			HRESULT hRet = pT->m_spFileDlg->GetResult(&spItem);
 
 			if (SUCCEEDED(hRet))

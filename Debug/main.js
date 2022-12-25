@@ -801,7 +801,21 @@ class CMainDlg extends soui4.JsHostDialog {
 		let edit_url = this.FindIChildByName("edit_url");
 		let str_url = new soui4.SStringA();
 		edit_url.GetWindowText(str_url,false);
-		this.playUrl(str_url.c_str());
+		let url = str_url.c_str();
+		if(str_url.IsEmpty()){
+			let filedlg = new soui4.SFileOpenDlg();
+			filedlg.isSave=false;
+			filedlg.defExt="mp4";
+			filedlg.AddFilter("视频文件(*.mp4,*.mkv)","*.mp4;*.mkv");
+			filedlg.AddFilter("所有文件(*.*)","*.*");
+			let ret = filedlg.DoModal();
+			if(ret != 1)
+				return;
+			url = filedlg.GetFilePath();
+			edit_url.SetWindowText(url);
+			
+		}
+		this.playUrl(url);
 	}
 
 	playUrl(url){

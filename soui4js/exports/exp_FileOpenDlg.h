@@ -7,7 +7,7 @@ class SFileOpenDlg {
 	CShellFileDialog *modernDlg;
 	CFileDialog		 *oldDlg;
 public:
-	SFileOpenDlg():bSave(false),flag(0), bMultiFile(false), modernDlg(NULL),oldDlg(NULL){
+	SFileOpenDlg():bSave(false),flag(0),  modernDlg(NULL),oldDlg(NULL){
 
 	}
 
@@ -40,7 +40,7 @@ public:
 			filters.push_back(all);
 		}
 		else {
-			for (auto it : filterPairs) {
+			for (auto & it : filterPairs) {
 				COMDLG_FILTERSPEC filter = { it.first.c_str(),it.second.c_str() };
 				filters.push_back(filter);
 			}
@@ -96,7 +96,7 @@ public:
 		filterPairs.push_back(std::make_pair<wstring, wstring>(nameW.c_str(), patternW.c_str()));
 	}
 
-	string GetFilePath() {
+	string GetFilePath() const{
 		if (modernDlg) {
 			SStringW path;
 			modernDlg->GetFilePath(path);
@@ -110,9 +110,22 @@ public:
 			return string(pathA.c_str(), pathA.GetLength());
 		}
 	}
+
+	string GetFileTitle() const {
+		if (modernDlg) {
+			SStringW path;
+			modernDlg->GetFileTitle(path);
+			SStringA pathA = S_CW2A(path, CP_UTF8);
+			return string(pathA.c_str(), pathA.GetLength());
+		}
+		else {
+			SStringT path = oldDlg->m_szFileTitle;
+			SStringA pathA = S_CT2A(path, CP_UTF8);
+			return string(pathA.c_str(), pathA.GetLength());
+		}
+	}
 public:
 	bool	 bSave;
-	bool	 bMultiFile;
 	SStringA defExt;
 	SStringA defName;
 	SStringA defaultFolder;
@@ -123,14 +136,16 @@ public:
 void Exp_FileOpenDlg(Module* module) {
 	JsClass<SFileOpenDlg> jsCls = module->ExportClass<SFileOpenDlg>("SFileOpenDlg");
 	jsCls.Init();
-	jsCls.AddCtor();
+	jsCls.AddCtor<constructor<SFileOpenDlg>>();
 	jsCls.AddGetSet("isSave", &SFileOpenDlg::bSave);
-	jsCls.AddGetSet("isMulti", &SFileOpenDlg::bMultiFile);
 	jsCls.AddGetSet("defExt", &SFileOpenDlg::defExt);
 	jsCls.AddGetSet("defName", &SFileOpenDlg::defName);
 	jsCls.AddGetSet("defaultFolder", &SFileOpenDlg::defaultFolder);
 	jsCls.AddGetSet("flag", &SFileOpenDlg::flag);
 	jsCls.AddFunc("AddFilter", &SFileOpenDlg::AddFilter);
 	jsCls.AddFunc("GetFilePath", &SFileOpenDlg::GetFilePath);
+	jsCls.AddFunc("GetFileTitle", &SFileOpenDlg::GetFileTitle);
+	jsCls.AddFunc("DoModal", &SFileOpenDlg::DoModal);
+	jsCls.AddFunc("DoModal2", &SFileOpenDlg::DoModal2);
 
 }
