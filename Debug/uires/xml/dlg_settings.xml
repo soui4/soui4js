@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SOUI name="mainWindow" title="@string/about" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" margin="5,5,5,5"  resizable="1" wndType="normal"
+translucent="1"
+>
+  <script src="js\aboutdlg.js"/>
+  <root skin="_skin.sys.wnd.bkgnd" cache="1"  width="400" height="300" on_init="onInit" on_exit="onExit">
+    <caption pos="0,0,-0,30" show="1" font="adding:0">
+	<img id="sysid_icon" skin="skin_logo"/>
+      <text pos="29,9">@string/settings</text>
+      <imgbtn id="IDCANCEL" skin="_skin.sys.btn.close"    pos="-45,0" tip="close" animate="1"/>
+    </caption>
+    <window pos="5,[2,-5,-5" layout="vbox">
+		<window size="-2,-1" layout="hbox" interval="5" gravity="center">
+			<text text="视频保存位置:"/>
+			<edit name="edit_video_path" size="0,-2" weight="1" readonly="1"/>
+			<button name="btn_pick_video_path" size="80,30"/>
+		</window>
+    </window>
+  </root>
+</SOUI>

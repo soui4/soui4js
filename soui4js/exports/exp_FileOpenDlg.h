@@ -51,13 +51,13 @@ public:
 		{
 			if (!defaultFolder.IsEmpty()) {
 				IShellItem* folderItem = NULL;
-				SStringW strFilder = S_CA2W(defaultFolder.c_str(), CP_UTF8);
+				SStringW strDefFolder = S_CA2W(defaultFolder.c_str(), CP_UTF8);
 				HMODULE hShell = LoadLibrary(_T("shell32.dll"));
 				if (hShell)
 				{
 					FunSHCreateItemFromParsingName funSHCreateItemFromParsingName = (FunSHCreateItemFromParsingName)GetProcAddress(hShell, "SHCreateItemFromParsingName");
 					if(funSHCreateItemFromParsingName &&
-						funSHCreateItemFromParsingName(strFilder.c_str(), NULL, IID_PPV_ARGS(&folderItem)) == S_OK) {
+						funSHCreateItemFromParsingName(strDefFolder.c_str(), NULL, IID_PPV_ARGS(&folderItem)) == S_OK) {
 						modernDlg->GetPtr()->SetDefaultFolder(folderItem);
 						folderItem->Release();
 					}

@@ -133,6 +133,11 @@ namespace qjsbind {
 		return ToUint32();
 	}
 
+	template<>
+	WeakValue::operator SStringA() const {
+		std::string str = ToStdString();
+		return SStringA(str.c_str(), str.length());
+	}
 
 	template<>
 	void SetValue(SStringA & dst, const Value& src) {

@@ -187,7 +187,9 @@ int DelDir(LPCSTR pszDir,BOOL bSilent) {
 	return SHFileOperation(&fileOp);
 }
 
-string PickFolder() {
+typedef HRESULT(WINAPI* FunSHCreateItemFromParsingName)(PCWSTR, IBindCtx*, REFIID, void**);
+
+string PickFolder(SStringA defPath) {
 	SStringA ret;
 	bool bNewDialog = false;
 	do {
@@ -198,6 +200,21 @@ string PickFolder() {
 			break;
 		if (!SUCCEEDED(dlg.GetPtr()->SetOptions(dwOptions | FOS_PICKFOLDERS)))
 			break;
+		if (!defPath.IsEmpty()) {
+			HMODULE hShell = LoadLibrary(_T("shell32.dll"));
+			if (hShell)
+			{
+				IShellItem* folderItem = NULL;
+				SStringW strDefPath = S_CA2W(defPath.c_str(), CP_UTF8);
+				FunSHCreateItemFromParsingName funSHCreateItemFromParsingName = (FunSHCreateItemFromParsingName)GetProcAddress(hShell, "SHCreateItemFromParsingName");
+				if (funSHCreateItemFromParsingName &&
+					funSHCreateItemFromParsingName(strDefPath.c_str(), NULL, IID_PPV_ARGS(&folderItem)) == S_OK) {
+					dlg.GetPtr()->SetDefaultFolder(folderItem);
+					folderItem->Release();
+				}
+				FreeLibrary(hShell);
+			}
+		}
 		bNewDialog = true;
 		if (IDOK == dlg.DoModal()) {
 			SStringW strDir;
@@ -215,49 +232,30 @@ string PickFolder() {
 	return string(ret.c_str(), ret.GetLength());
 }
 
-string ShowFileSaveDialog(LPCSTR defName,LPCSTR defExt,LPCSTR pszFilter,int flag= OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT) {
-	SStringA ret;
-	CShellFileSaveDialog dlg;
-	if (!dlg.IsNull()) {
-		if (IDOK == dlg.DoModal()) {
-			SStringW strDir;
-			dlg.GetFilePath(strDir);
-			ret = S_CW2A(strDir, CP_UTF8);
-		}
+string getSpecialPath(SStringA type) {
+	type.MakeLower();
+	int ClsId = -1;
+	if (type == "video") {
+		ClsId = CSIDL_MYVIDEO;
 	}
-	else {
-		SStringT strExt = S_CA2T(defExt, CP_UTF8);
-		SStringT strName = S_CA2T(defName, CP_UTF8);
-		SStringT strFilter = S_CA2T(pszFilter, CP_UTF8);
-		CFileDialog dlg2(FALSE, strExt.c_str(), strName.c_str(), flag, strFilter.c_str());
-		if (dlg2.DoModal() == IDOK) {
-			SStringT strDir=dlg2.m_szFileName;
-			ret = S_CT2A(strDir, CP_UTF8);
-		}
+	else if (type == "music")
+	{
+		ClsId = CSIDL_MYMUSIC;
 	}
-	return string(ret.c_str(), ret.GetLength());
-}
-	
-string ShowFileOpenDialog(LPCSTR defName, LPCSTR defExt, LPCSTR pszFilter, int flag=0) {
-	SStringA ret;
-	CShellFileOpenDialog dlg;
-	if (!dlg.IsNull()) {
-		if (IDOK == dlg.DoModal()) {
-			SStringW strDir;
-			dlg.GetFilePath(strDir);
-			ret = S_CW2A(strDir, CP_UTF8);
-		}
+	else if (type == "document") {
+		ClsId = CSIDL_MYDOCUMENTS;
 	}
-	else {
-		SStringT strExt = S_CA2T(defExt, CP_UTF8);
-		SStringT strName = S_CA2T(defName, CP_UTF8);
-		SStringT strFilter = S_CA2T(pszFilter, CP_UTF8);
-		CFileDialog dlg2(TRUE, strExt.c_str(), strName.c_str(), flag, strFilter.c_str());
-		if (dlg2.DoModal() == IDOK) {
-			SStringT strDir = dlg2.m_szFileName;
-			ret = S_CT2A(strDir, CP_UTF8);
-		}
+	else if (type == "appdata") {
+		ClsId = CSIDL_APPDATA;
 	}
+	else if (type == "desktop") {
+		ClsId = CSIDL_DESKTOP;
+	}
+	if (ClsId == -1)
+		return "";
+	wchar_t buf[MAX_PATH] = { 0 };
+	SHGetSpecialFolderPath(NULL, buf, ClsId, TRUE);
+	SStringA ret= S_CW2A(buf, CP_UTF8);
 	return string(ret.c_str(), ret.GetLength());
 }
 
@@ -282,7 +280,6 @@ void Exp_Global(qjsbind::Module* module)
 	module->ExportFunc("FileMd5", &FileMd5);
 	module->ExportFunc("DelDir", &DelDir);
 	module->ExportFunc("PickFolder", &PickFolder);
-	module->ExportFunc("ShowFileOpenDialog", &ShowFileOpenDialog);
-	module->ExportFunc("ShowFileSaveDialog", &ShowFileSaveDialog);
+	module->ExportFunc("getSpecialPath", &getSpecialPath);
 
 }

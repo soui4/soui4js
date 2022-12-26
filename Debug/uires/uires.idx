@@ -7,6 +7,7 @@
     <file name="dlg_test" path="xml\dlg_test.xml"/>
     <file name="dlg_add_room" path="xml\dlg_add_room.xml"/>
     <file name="dlg_input_filter" path="xml\dlg_input_filter.xml"/>
+    <file name="dlg_settings" path="xml\dlg_settings.xml"/>
   </LAYOUT>
   
   <values>

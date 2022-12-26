@@ -12,6 +12,7 @@ sendWheel2Hover="1"
 		<text id="sysid_title">@string/title</text>
 		<window size="0,0" weight="1"/>
 		<button size="50,28" name="btn_about" text="About"/>
+		<button size="50,28" name="btn_settings" text="@string/settings"/>
 		<check name="chk_enable_subtitle" text="显示弹幕" checked="true"/>
 		<imgbtn id="sysid_min" skin="_skin.sys.btn.minimize" animate="1" />
 		<window>
