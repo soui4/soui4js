@@ -41,6 +41,7 @@
     
     <file name="slide_show_ctrlpane" path="anim\slide_show_ctrlpane.xml"/>
     <file name="slide_hide_ctrlpane" path="anim\slide_hide_ctrlpane.xml"/>
+   <file name="alpha_recording" path="anim\alpha_recording.xml"/>
   </anim>
   <smenu>
     <file name="favor_add" path="smenu\favor_add.xml"/>

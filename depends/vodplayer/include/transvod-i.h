@@ -236,7 +236,7 @@ DECLARE_INTERFACE(ITransVodListener) {
     STDMETHOD_(void, onBitrateReport)
         (THIS_ uint32_t audioBitrate,uint32_t videoBitrate) PURE;
 
-    STDMETHOD_(void, onRecordStart)(THIS_ LPCSTR filename) PURE;
+    STDMETHOD_(void, onRecordStart)(THIS_ LPCSTR filename,int errCode) PURE;
     STDMETHOD_(void, onRecordStop)(THIS) PURE;
 };
 

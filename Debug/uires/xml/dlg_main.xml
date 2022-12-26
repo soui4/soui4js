@@ -54,7 +54,12 @@ sendWheel2Hover="1"
 					<button size="100,-2" name="btn_setFilter" text="设置滤镜"/>
           <window size="100,-2">
             <button pos="0,0,-0,-0" name="btn_record_start" text="录制视频"/>
-            <button pos="0,0,-0,-0" name="btn_record_stop" text="停止录制" visible="0"/>
+            <button pos="0,0,-0,-0" name="btn_record_stop"  visible="0" layout="hbox" gravity="center" interval="5">
+            		<window size="0,0" weight="1"/>
+            		<text text="停止"/>
+            		<img size="20,20" name="indicator_recording" skin="skin_recording"/>
+            		<window size="0,0" weight="1"/>
+            </button>
           </window>
           <window size="0,0" weight="1"/>
 				</window>
