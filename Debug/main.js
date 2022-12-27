@@ -22,6 +22,35 @@ class FilterInputDialog extends soui4.JsHostDialog{
 		return false;
 	}
 };
+
+class SettingsDialog extends soui4.JsHostDialog{
+	constructor(mainDlg){
+		super("layout:dlg_settings");
+		this.mainDlg = mainDlg;
+		this.onEvt = this.onEvent;
+		soui4.log("new SettingsDialog");
+	}
+	onEvent(e){
+		if(e.GetID()==8000){//event_init
+			let edit_video_path = this.FindIChildByName("edit_video_path");
+			edit_video_path.SetWindowText(this.mainDlg.settings.video_path);
+		}else if(e.GetID()==8001)//event_exit
+		{
+		}else if(e.GetID()==10000 && e.Sender().GetName()=="btn_pick_video_path"){
+			this.onBtnPickVideoPath();
+		}
+	}
+
+	onBtnPickVideoPath(){
+		let videoPath = soui4.PickFolder(this.mainDlg.settings.video_path);
+		if(videoPath != ""){
+			let edit_video_path = this.FindIChildByName("edit_video_path");
+			edit_video_path.SetWindowText(videoPath);
+			this.mainDlg.settings.video_path = videoPath;
+		}
+	}
+};
+
 class AddRoomDialog extends soui4.JsHostDialog{
 	constructor(platforms){
 		super("layout:dlg_add_room");
@@ -571,8 +600,8 @@ class CMainDlg extends soui4.JsHostDialog {
 		{
 			soui4.log("on animation stop");
 			if(this.playing){
-				this.FindIChildByName("curtain_left").SetVisible(false);
-				this.FindIChildByName("curtain_right").SetVisible(false);
+				this.FindIChildByName("curtain_left").SetVisible(false,true);
+				this.FindIChildByName("curtain_right").SetVisible(false,true);
 			}
 		}else if(evtId==17000 &&e.Sender().GetName()=="slider_prog"){
 			let evtPos = soui4.toEventSliderPos(e);
@@ -597,6 +626,8 @@ class CMainDlg extends soui4.JsHostDialog {
 			}
 		}else if(evtId==10000 &&e.Sender().GetName()=="btn_about"){
 			this.onBtnAbout(e);
+		}else if(evtId==10000 &&e.Sender().GetName()=="btn_settings"){
+			this.onBtnSettings();
 		}else if(evtId==9000 &&e.Sender().GetName()=="wnd_room_bookmark") //EVT_MOUSE_HOVER
 		{
 			if(this.hideRoomListTimer!=undefined)
@@ -701,24 +732,59 @@ class CMainDlg extends soui4.JsHostDialog {
 		//this.vodPlayer.SetVideoFilter("scale=405:720,rotate=PI/2");		
 		//this.vodPlayer.SetVideoFilter("rotate=PI/2");
 	}
-	onRecordStart(recordName){
-		this.FindIChildByName("btn_record_start").SetVisible(false,false);
-		this.FindIChildByName("btn_record_stop").SetVisible(true,true);
+	onRecordStart(recordName,errCode){
+		if(errCode==0){
+			this.FindIChildByName("btn_record_start").SetVisible(false,false);
+			this.FindIChildByName("btn_record_stop").SetVisible(true,true);
+			let pApp = soui4.GetApp();
+			let ani = pApp.LoadAnimation("anim:alpha_recording");
+			let recording = this.FindIChildByName("indicator_recording");
+			recording.SetAnimation(ani);
+			ani.Release();
+		}
 	}
 	onBtnStartRecord(){
-		this.vodPlayer.StartRecord("d:\\record.mp4");
+		let now = new Date();
+		this.vodPlayer.StartRecord(this.settings.video_path+"\\record_"+now.getFullYear()+"_"+now.getMonth()+"_"+now.getDay()+"_"+now.getMinutes()+"_"+now.getSeconds()+".mp4");
 	}
-	onRecordStop(){
+	onRecordStop(recordName,errCode){
 		this.FindIChildByName("btn_record_start").SetVisible(true,false);
 		this.FindIChildByName("btn_record_stop").SetVisible(false,true);
+		let recording = this.FindIChildByName("indicator_recording");
+		recording.ClearAnimation();
 	}
 	onBtnStopRecord(){
 		this.vodPlayer.StopRecord();
 	}
+
+	onBtnSettings(){
+		soui4.log("onBtnSettings");
+		let dlg = new SettingsDialog(this);
+		dlg.DoModal(this.GetHwnd());
+		//save to file.
+		let f = std.open(g_WordDir+"\\settings.json", "w");
+		let settingStr = JSON.stringify(this.settings);
+		f.puts(settingStr);
+		f.close();
+	}
+
 	onInit(){
 		soui4.log("on init dialog");
 		this.EnableDragDrop();
 
+		try{
+			let f = std.open(g_WordDir+"\\settings.json", "r");
+			let settingStr = f.readAsString();
+			f.close();
+			this.settings = JSON.parse(settingStr);
+		}catch(e){
+			soui4.log("read settings.json failed!");
+		}
+		if(this.settings == undefined) this.settings={};
+		if(this.settings.video_path == undefined){
+			this.settings.video_path = soui4.getSpecialPath("video") + "\\sliveplayer";
+			os.mkdir(this.settings.video_path);
+		}
 		//enable dropdrop.
 		this.dropTarget = new soui4.SDropTarget();
 		this.dropTarget.cbHandler = this;
@@ -868,9 +934,11 @@ class CMainDlg extends soui4.JsHostDialog {
 	}
 };
 
+var g_WordDir;
 function main(inst,workDir,args)
 {
 	soui4.log(workDir);
+	g_WordDir = workDir;
 	let theApp = soui4.GetApp();
 	let souiFac = soui4.CreateSouiFactory();
 	//*

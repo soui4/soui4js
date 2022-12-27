@@ -58,7 +58,7 @@ public:
 					FunSHCreateItemFromParsingName funSHCreateItemFromParsingName = (FunSHCreateItemFromParsingName)GetProcAddress(hShell, "SHCreateItemFromParsingName");
 					if(funSHCreateItemFromParsingName &&
 						funSHCreateItemFromParsingName(strDefFolder.c_str(), NULL, IID_PPV_ARGS(&folderItem)) == S_OK) {
-						modernDlg->GetPtr()->SetDefaultFolder(folderItem);
+						modernDlg->GetPtr()->SetFolder(folderItem);
 						folderItem->Release();
 					}
 					FreeLibrary(hShell);

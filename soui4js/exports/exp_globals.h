@@ -209,7 +209,7 @@ string PickFolder(SStringA defPath) {
 				FunSHCreateItemFromParsingName funSHCreateItemFromParsingName = (FunSHCreateItemFromParsingName)GetProcAddress(hShell, "SHCreateItemFromParsingName");
 				if (funSHCreateItemFromParsingName &&
 					funSHCreateItemFromParsingName(strDefPath.c_str(), NULL, IID_PPV_ARGS(&folderItem)) == S_OK) {
-					dlg.GetPtr()->SetDefaultFolder(folderItem);
+					dlg.GetPtr()->SetFolder(folderItem);
 					folderItem->Release();
 				}
 				FreeLibrary(hShell);

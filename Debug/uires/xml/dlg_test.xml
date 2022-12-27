@@ -4,10 +4,10 @@ translucent="1"
 >
   <script src="js\aboutdlg.js"/>
   <root skin="_skin.sys.wnd.bkgnd" cache="1"  width="400" height="300" on_init="onInit" on_exit="onExit">
-    <caption pos="0,0,-0,30" show="1" font="adding:0">
+    <caption pos="0,0,-0,30" layout="hbox" gravity="center" interval="5">
 	<img id="sysid_icon" skin="skin_logo"/>
-      <text pos="29,9">@string/about</text>
-      <imgbtn id="IDCANCEL" skin="_skin.sys.btn.close"    pos="-45,0" tip="close" animate="1"/>
+      <text size="0,-1" weight="1">@string/about</text>
+      <imgbtn id="IDCANCEL" skin="_skin.sys.btn.close"  tip="close" animate="1"/>
     </caption>
     <window pos="5,[2,-5,-5">
       <window layout="vbox" interval="10" gravity="left" size="-2,-2" padding="10,20,10,10">

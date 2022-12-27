@@ -13,7 +13,8 @@
     <imgframe name="skin_room_bookmark" src="img:png_room_bookmark"  margin="0,26,0,26"/>
 	<imgframe name="skin_item_bk" src="img:png_item_bk" states="3" margin="2,2,2,2"/>
   <imglist name="skin_hot" src="img:png_hot"  states="6"/>
-	<imglist name="skin_logo" src="img:png_logo" />
+	<imglist name="skin_logo" scale="100" src="img:png_logo_100" />
+	<imglist name="skin_logo" scale="200" src="img:png_logo_200" />
 	<shape name="skin_recording" shape="oval">
 		<solid color="@color/red"/>
 	</shape>

@@ -2,7 +2,7 @@
   <string>
     <title value="SLivePlayer"/>
     <ver value="1.0"/>
-    <ver about="About SLivePlayer"/>
+    <about value="About"/>
     <add_favor value="增加自定义房间"/>
     <settings value="设置"/>
   </string>

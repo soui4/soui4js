@@ -261,10 +261,6 @@ namespace qjsbind {
 			return ToFloat64();
 		}
 
-		operator std::string() const {
-			return ToStdString();
-		}
-
 		int64_t ToBigInt64() const {
 			int64_t value = 0;
 			JS_ToBigInt64(context_, &value, value_);

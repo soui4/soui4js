@@ -26,7 +26,8 @@
     <file name="png_room_bookmark" path="image\room_bookmark.png" />
   	<file name="png_item_bk" path="image\item_bk.png"/>
   	<file name="png_hot" path="image\hot.png"/>
-	<file name="png_logo" path="image\sliveplayer.png"/>
+	<file name="png_logo_100" path="image\logo_100.png"/>
+	<file name="png_logo_200" path="image\logo_200.png"/>
   </IMG>
   <ICON>
     <file name="ICON_LOGO"  path="image\sliveplayer.ico"/>
