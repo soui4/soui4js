@@ -22,6 +22,35 @@ class FilterInputDialog extends soui4.JsHostDialog{
 		return false;
 	}
 };
+
+class SettingsDialog extends soui4.JsHostDialog{
+	constructor(mainDlg){
+		super("layout:dlg_settings");
+		this.mainDlg = mainDlg;
+		this.onEvt = this.onEvent;
+		soui4.log("new SettingsDialog");
+	}
+	onEvent(e){
+		if(e.GetID()==8000){//event_init
+			let edit_video_path = this.FindIChildByName("edit_video_path");
+			edit_video_path.SetWindowText(this.mainDlg.settings.video_path);
+		}else if(e.GetID()==8001)//event_exit
+		{
+		}else if(e.GetID()==10000 && e.Sender().GetName()=="btn_pick_video_path"){
+			this.onBtnPickVideoPath();
+		}
+	}
+
+	onBtnPickVideoPath(){
+		let videoPath = soui4.PickFolder(this.mainDlg.settings.video_path);
+		if(videoPath != ""){
+			let edit_video_path = this.FindIChildByName("edit_video_path");
+			edit_video_path.SetWindowText(videoPath);
+			this.mainDlg.settings.video_path = videoPath;
+		}
+	}
+};
+
 class AddRoomDialog extends soui4.JsHostDialog{
 	constructor(platforms){
 		super("layout:dlg_add_room");
@@ -456,7 +485,7 @@ class CMainDlg extends soui4.JsHostDialog {
         super(resId);
 		this.onMsg = this.onMessage;
 		this.onEvt = this.onEvent;
-
+		this.isLiveMode = false;
 		this.vodPlayer = new jsplayer.SVodPlayer();
 		this.vodPlayer.cbHandler = this;
 		this.vodPlayer.onError = this.onError;
@@ -474,31 +503,7 @@ class CMainDlg extends soui4.JsHostDialog {
     
 	onError(errCode,statusCode){
 		soui4.log("errCode:"+errCode+" statusCode:"+statusCode);
-		this.onStop(0);
-	}
-
-	onTimer(){
-		if(this.state == 4)
-		{
-			let pSubTitle = this.FindIChildByName("scroll_subtitles");
-			if(pSubTitle)
-			{
-				let says=[
-					"SOUI4很强大",
-					"全部核心对象导致类COM接口",
-					"方便C语言调用",
-					"QQ群：229313785",
-					"https://github.com/soui4/soui",
-				];
-				let iSubTitle = extctrl.QiIScrollSubtitles(pSubTitle);
-				let txtIndex = Math.round(Math.random()*says.length);
-				let type = Math.round(Math.random()*4);
-				iSubTitle.AddSubtitles(says[txtIndex],type);
-				iSubTitle.Release();
-			}
-			let delay = Math.round(Math.random()*100);
-			this.timer = os.setTimeout(this.onTimer,delay,this);
-		}
+		this.onStop();
 	}
 
 	onStateChanged(state, reason){
@@ -506,7 +511,13 @@ class CMainDlg extends soui4.JsHostDialog {
 		this.state=state;
 		if(state == 4){//playing
 			soui4.log("start timer of 100ms");
-			this.timer = os.setTimeout(this.onTimer,100,this);
+			this.FindIChildByName("btn_resume").SetVisible(false,true);
+			this.FindIChildByName("btn_pause").SetVisible(true,true);
+		}else if(state==6){//stoped
+			this.onStop();
+		}else if(state == 5){//paused
+			this.FindIChildByName("btn_resume").SetVisible(true,true);
+			this.FindIChildByName("btn_pause").SetVisible(false,true);
 		}
 	}
 
@@ -520,8 +531,8 @@ class CMainDlg extends soui4.JsHostDialog {
 	onDuration(totalTime){
 		let  pSlider = this.FindIChildByName("slider_prog");
 		let  pTxt = this.FindIChildByName("txt_duration");
-
-		if(totalTime!=0x7fffffff)
+		this.isLiveMode = totalTime==0x7fffffff;
+		if(!this.isLiveMode)
 		{
 			let sliderApi = soui4.QiIProgress(pSlider);
 			sliderApi.SetRange(0,totalTime);
@@ -540,11 +551,15 @@ class CMainDlg extends soui4.JsHostDialog {
 			if(hour>0)
 				pTxt.SetWindowText(""+hour+":"+minute+":"+sec);
 			else
-				pTxt.SetWindowText(""+minute+":"+sec);			    
+				pTxt.SetWindowText(""+minute+":"+sec);	
+			this.FindIChildByName("btn_pause").EnableWindow(true,true);
+			this.FindIChildByName("btn_resume").EnableWindow(true,true);
 		}else
 		{
 			pSlider.EnableWindow(false,true);
 			pTxt.SetWindowText("--:--");
+			this.FindIChildByName("btn_pause").EnableWindow(false,true);
+			this.FindIChildByName("btn_resume").EnableWindow(false,true);
 		}
 	}
 
@@ -571,8 +586,8 @@ class CMainDlg extends soui4.JsHostDialog {
 		{
 			soui4.log("on animation stop");
 			if(this.playing){
-				this.FindIChildByName("curtain_left").SetVisible(false);
-				this.FindIChildByName("curtain_right").SetVisible(false);
+				this.FindIChildByName("curtain_left").SetVisible(false,true);
+				this.FindIChildByName("curtain_right").SetVisible(false,true);
 			}
 		}else if(evtId==17000 &&e.Sender().GetName()=="slider_prog"){
 			let evtPos = soui4.toEventSliderPos(e);
@@ -597,6 +612,8 @@ class CMainDlg extends soui4.JsHostDialog {
 			}
 		}else if(evtId==10000 &&e.Sender().GetName()=="btn_about"){
 			this.onBtnAbout(e);
+		}else if(evtId==10000 &&e.Sender().GetName()=="btn_settings"){
+			this.onBtnSettings();
 		}else if(evtId==9000 &&e.Sender().GetName()=="wnd_room_bookmark") //EVT_MOUSE_HOVER
 		{
 			if(this.hideRoomListTimer!=undefined)
@@ -701,24 +718,67 @@ class CMainDlg extends soui4.JsHostDialog {
 		//this.vodPlayer.SetVideoFilter("scale=405:720,rotate=PI/2");		
 		//this.vodPlayer.SetVideoFilter("rotate=PI/2");
 	}
-	onRecordStart(recordName){
-		this.FindIChildByName("btn_record_start").SetVisible(false,false);
-		this.FindIChildByName("btn_record_stop").SetVisible(true,true);
+	onRecordStart(recordName,errCode){
+		if(errCode==0){
+			this.FindIChildByName("btn_record_start").SetVisible(false,false);
+			this.FindIChildByName("btn_record_stop").SetVisible(true,true);
+			let pApp = soui4.GetApp();
+			let ani = pApp.LoadAnimation("anim:alpha_recording");
+			let recording = this.FindIChildByName("indicator_recording");
+			recording.SetAnimation(ani);
+			ani.Release();
+		}
 	}
-	onBtnStartRecord(){
-		this.vodPlayer.StartRecord("d:\\record.mp4");
+	onBtnStartRecord(e){
+		let now = new Date();
+		this.vodPlayer.StartRecord(this.settings.video_path+"\\record_"+now.getFullYear()+"_"+now.getMonth()+"_"+now.getDay()+"_"+now.getMinutes()+"_"+now.getSeconds()+".mp4");
 	}
-	onRecordStop(){
+	onRecordStop(recordName,errCode){
 		this.FindIChildByName("btn_record_start").SetVisible(true,false);
 		this.FindIChildByName("btn_record_stop").SetVisible(false,true);
+		let recording = this.FindIChildByName("indicator_recording");
+		recording.ClearAnimation();
 	}
-	onBtnStopRecord(){
+	onBtnStopRecord(e){
 		this.vodPlayer.StopRecord();
 	}
+
+	onBtnSettings(){
+		soui4.log("onBtnSettings");
+		let dlg = new SettingsDialog(this);
+		dlg.DoModal(this.GetHwnd());
+		//save to file.
+		let f = std.open(g_WordDir+"\\settings.json", "w");
+		let settingStr = JSON.stringify(this.settings);
+		f.puts(settingStr);
+		f.close();
+	}
+
+	onBtnPause(e){
+		this.vodPlayer.Pause();
+	}
+
+	onBtnResume(e){
+		this.vodPlayer.Resume();
+	}
+
 	onInit(){
 		soui4.log("on init dialog");
 		this.EnableDragDrop();
 
+		try{
+			let f = std.open(g_WordDir+"\\settings.json", "r");
+			let settingStr = f.readAsString();
+			f.close();
+			this.settings = JSON.parse(settingStr);
+		}catch(e){
+			soui4.log("read settings.json failed!");
+		}
+		if(this.settings == undefined) this.settings={};
+		if(this.settings.video_path == undefined){
+			this.settings.video_path = soui4.getSpecialPath("video") + "\\sliveplayer";
+			os.mkdir(this.settings.video_path);
+		}
 		//enable dropdrop.
 		this.dropTarget = new soui4.SDropTarget();
 		this.dropTarget.cbHandler = this;
@@ -726,8 +786,10 @@ class CMainDlg extends soui4.JsHostDialog {
 		let dropAccept = this.FindIChildByName("sdl_back");		
 		dropAccept.RegisterDragDrop(this.dropTarget);
 		
-		this.connect("btn_play",10000, this.onPlay);
-		this.connect("btn_stop",10000, this.onStop);
+		this.connect("btn_play",10000, this.onBtnPlay);
+		this.connect("btn_stop",10000, this.onBtnStop);
+		this.connect("btn_pause",10000, this.onBtnPause);
+		this.connect("btn_resume",10000, this.onBtnResume);
 		this.connect("btn_setFilter",10000, this.onSetFilter);
 		this.connect("btn_reflesh_room",10000, this.onBtnRefleshRoom);
 		this.connect("btn_add_room",10000,this.onBtnAddRoom);
@@ -774,7 +836,10 @@ class CMainDlg extends soui4.JsHostDialog {
 		this.DestroyWindow();
 	}
 
-	onStop(e){
+	onBtnStop(e){
+		this.onStop();
+	}
+	onStop(){
 		if(this.playing){
 			this.vodPlayer.Stop();
 			this.playing = false;
@@ -797,11 +862,25 @@ class CMainDlg extends soui4.JsHostDialog {
 			pAniShowRight.Release();
 		}
 	}
-	onPlay(e){
+	onBtnPlay(e){
 		let edit_url = this.FindIChildByName("edit_url");
 		let str_url = new soui4.SStringA();
 		edit_url.GetWindowText(str_url,false);
-		this.playUrl(str_url.c_str());
+		let url = str_url.c_str();
+		if(str_url.IsEmpty()){
+			let filedlg = new soui4.SFileOpenDlg();
+			filedlg.isSave=false;
+			filedlg.defExt="mp4";
+			filedlg.AddFilter("视频文件(*.mp4,*.mkv)","*.mp4;*.mkv");
+			filedlg.AddFilter("所有文件(*.*)","*.*");
+			let ret = filedlg.DoModal();
+			if(ret != 1)
+				return;
+			url = filedlg.GetFilePath();
+			edit_url.SetWindowText(url);
+			
+		}
+		this.playUrl(url);
 	}
 
 	playUrl(url){
@@ -824,7 +903,7 @@ class CMainDlg extends soui4.JsHostDialog {
 	}
 
 	onBtnAbout(e){
-		let dialog = new soui4.JsHostDialog("layout:dlg_test");
+		let dialog = new soui4.JsHostDialog("layout:dlg_about");
 		let ret = dialog.DoModal(this.GetHwnd());
 	}
 
@@ -854,9 +933,11 @@ class CMainDlg extends soui4.JsHostDialog {
 	}
 };
 
+var g_WordDir;
 function main(inst,workDir,args)
 {
 	soui4.log(workDir);
+	g_WordDir = workDir;
 	let theApp = soui4.GetApp();
 	let souiFac = soui4.CreateSouiFactory();
 	/*

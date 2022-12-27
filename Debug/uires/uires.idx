@@ -4,7 +4,7 @@
   </UIDEF>
   <LAYOUT>
     <file name="XML_MAINWND" path="xml\dlg_main.xml"/>
-    <file name="dlg_test" path="xml\dlg_test.xml"/>
+    <file name="dlg_about" path="xml\dlg_about.xml"/>
     <file name="dlg_add_room" path="xml\dlg_add_room.xml"/>
     <file name="dlg_input_filter" path="xml\dlg_input_filter.xml"/>
     <file name="dlg_settings" path="xml\dlg_settings.xml"/>
@@ -28,6 +28,10 @@
   	<file name="png_hot" path="image\hot.png"/>
 	<file name="png_logo_100" path="image\logo_100.png"/>
 	<file name="png_logo_200" path="image\logo_200.png"/>
+	<file name="png_btn_config" path="image\btn_config.png"/>
+	<file name="png_btn_pause" path="image\btn_pause.png"/>
+	<file name="png_btn_play" path="image\btn_play.png"/>
+	<file name="png_btn_record" path="image\btn_record.png"/>
   </IMG>
   <ICON>
     <file name="ICON_LOGO"  path="image\sliveplayer.ico"/>

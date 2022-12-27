@@ -18,4 +18,9 @@
 	<shape name="skin_recording" shape="oval">
 		<solid color="@color/red"/>
 	</shape>
+	<colorrect name="skin_url_bk" cornerPercent="0.5" normal="@color/red"/>
+	<imglist name="skin_btn_config" src="img:png_btn_config" states="4"/>
+	<imglist name="skin_btn_pause" src="img:png_btn_pause" states="4"/>
+	<imglist name="skin_btn_play" src="img:png_btn_play" states="4"/>
+	<imglist name="skin_btn_record" src="img:png_btn_record" states="3"/>
 </skin>
