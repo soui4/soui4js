@@ -34,6 +34,10 @@ void Exp_IApp(qjsbind::Module* module)
 	jsCls.AddFunc("LoadAnimation", &IApplication::LoadAnimationA);
 	jsCls.AddFunc("LoadValueAnimator", &IApplication::LoadValueAnimatorA);
 	jsCls.AddFunc("LoadImage", &IApplication::LoadImageA);
+	jsCls.AddFunc("LoadTranslator", &IApplication::LoadTranslatorA);
+	jsCls.AddFunc("InstallTranslator", &IApplication::InstallTranslator);
+	jsCls.AddFunc("UninstallTranslator", &IApplication::UnnstallTranslator);
+
 	jsCls.AddFunc("EnableNotifyCenter", &IApplication::EnableNotifyCenter);
 
 	jsCls.AddFunc("GetInnerSingleton", &IApplication::GetInnerSingleton);

@@ -164,6 +164,15 @@ class SOUI_EXP SApplication
 		return LoadValueAnimator(str);
 	}
 
+	STDMETHOD_(ITranslator *,LoadTranslator)(THIS_ LPCTSTR strResId) OVERRIDE;
+	STDMETHOD_(ITranslator *,LoadTranslatorA)(THIS_ LPCSTR strResId) OVERRIDE{
+		SStringT str = S_CA2T(strResId,CP_UTF8);
+		return LoadTranslator(str);
+	}
+
+	STDMETHOD_(BOOL,InstallTranslator)(THIS_ ITranslator * trModule) OVERRIDE;
+	STDMETHOD_(BOOL,UnnstallTranslator)(THIS_  REFGUID langId) OVERRIDE;
+
 	STDMETHOD_(void,EnableNotifyCenter)(THIS_ BOOL bEnable,int interval DEF_VAL(20)) OVERRIDE;
 
 	STDMETHOD_(void *,GetInnerSingleton)(THIS_ SingletonType nType) OVERRIDE;

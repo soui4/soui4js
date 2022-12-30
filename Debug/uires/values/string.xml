@@ -3,6 +3,6 @@
     <title value="SLivePlayer"/>
     <ver value="1.0"/>
     <about value="About"/>
-    <add_favor value="增加自定义房间"/>
-    <settings value="设置"/>
+    <add_favor value="Add Room"/>
+    <settings value="Settings"/>
   </string>

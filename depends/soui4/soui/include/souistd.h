@@ -68,5 +68,3 @@
 
 #include <control/souictrls.h>
 #include <control/SMessageBox.h>
-
-#pragma comment(lib, "shlwapi.lib")

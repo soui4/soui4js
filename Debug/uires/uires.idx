@@ -53,4 +53,8 @@
     <file name="favor_add" path="smenu\favor_add.xml"/>
     <file name="favor_del" path="smenu\favor_del.xml"/>  
   </smenu>
+  <lang>
+    <file name="lang_cn" path="lang\lang_cn.xml"/>
+    <file name="lang_en" path="lang\lang_en.xml"/>  
+  </lang>
 </resource>

@@ -34,10 +34,28 @@ class SettingsDialog extends soui4.JsHostDialog{
 		if(e.GetID()==8000){//event_init
 			let edit_video_path = this.FindIChildByName("edit_video_path");
 			edit_video_path.SetWindowText(this.mainDlg.settings.video_path);
+			let radio_lang = this.FindIChildByID(100+(this.mainDlg.settings.lang_en?0:1));
+			radio_lang.SetCheck(true);//check current lang.
 		}else if(e.GetID()==8001)//event_exit
 		{
 		}else if(e.GetID()==10000 && e.Sender().GetName()=="btn_pick_video_path"){
 			this.onBtnPickVideoPath();
+		}else if(e.GetID()==(8100 + 7) && (e.Sender().GetID()==100 || e.Sender().GetID()==101)){
+			//EVT_STATECHANGED
+			let e2 = soui4.toEventSwndStateChanged(e);
+			if((e2.dwNewState & 0x04) && !(e2.dwOldState&0x04)){
+				//checked
+				let theApp = soui4.GetApp();
+				let useEnLang = (e.Sender().GetID()==100);//check lang_en
+				let trModule = theApp.LoadTranslator(useEnLang?"lang:lang_en":"lang:lang_cn");
+				let langName = new soui4.SStringA();
+				trModule.GetName(langName);
+				let trMgr = theApp.GetTranslator();
+				trMgr.SetLanguage(langName.c_str());
+				theApp.InstallTranslator(trModule);
+				trModule.Release();
+				this.mainDlg.settings.lang_en = useEnLang;
+			}
 		}
 	}
 
@@ -483,6 +501,37 @@ class RoomTvAdapter extends soui4.STvAdapter{
 class CMainDlg extends soui4.JsHostDialog {
     constructor(resId) {
         super(resId);
+
+		try{
+			let f = std.open(g_WordDir+"\\settings.json", "r");
+			let settingStr = f.readAsString();
+			f.close();
+			this.settings = JSON.parse(settingStr);
+		}catch(e){
+			soui4.log("read settings.json failed!");
+		}
+		if(this.settings == undefined) this.settings={};
+		if(this.settings.video_path == undefined){
+			this.settings.video_path = soui4.getSpecialPath("video") + "\\sliveplayer";
+			os.mkdir(this.settings.video_path);
+		}
+		if(this.settings.lang_en == undefined){
+			this.settings.lang_en = true;
+		}
+		//init lang
+		let theApp = soui4.GetApp();
+		let trModule = theApp.LoadTranslator(this.settings.lang_en?"lang:lang_en":"lang:lang_cn");
+		let langName = new soui4.SStringA();
+		trModule.GetName(langName);
+		let trMgr = theApp.GetTranslator();
+		trMgr.SetLanguage(langName.c_str());
+		theApp.InstallTranslator(trModule);
+		trModule.Release();
+
+		if(this.settings.volume == undefined){
+			this.settings.volume = 80;//init to 80%
+		}
+
 		this.onMsg = this.onMessage;
 		this.onEvt = this.onEvent;
 		this.isLiveMode = false;
@@ -497,7 +546,7 @@ class CMainDlg extends soui4.JsHostDialog {
 		let sdlPresenter = jsplayer.CreateSdlPresenter(this);
 		this.SetPresenter(sdlPresenter);
 		this.vodPlayer.Init(sdlPresenter);
-		this.vodPlayer.SetVolume(80);//init to 80%
+		this.vodPlayer.SetVolume(this.settings.volume);
 		sdlPresenter.Release();
     }
     
@@ -595,6 +644,7 @@ class CMainDlg extends soui4.JsHostDialog {
 		}else if(evtId==17000 &&e.Sender().GetName()=="slider_volume"){
 			let evtPos = soui4.toEventSliderPos(e);
 			this.vodPlayer.SetVolume(evtPos.nPos);
+			this.settings.volume = evtPos.nPos;
 		}
 		else if(evtId == 10000 && e.Sender().GetName()=="chk_enable_subtitle")
 		{
@@ -744,14 +794,8 @@ class CMainDlg extends soui4.JsHostDialog {
 	}
 
 	onBtnSettings(){
-		soui4.log("onBtnSettings");
 		let dlg = new SettingsDialog(this);
 		dlg.DoModal(this.GetHwnd());
-		//save to file.
-		let f = std.open(g_WordDir+"\\settings.json", "w");
-		let settingStr = JSON.stringify(this.settings);
-		f.puts(settingStr);
-		f.close();
 	}
 
 	onBtnPause(e){
@@ -766,19 +810,6 @@ class CMainDlg extends soui4.JsHostDialog {
 		soui4.log("on init dialog");
 		this.EnableDragDrop();
 
-		try{
-			let f = std.open(g_WordDir+"\\settings.json", "r");
-			let settingStr = f.readAsString();
-			f.close();
-			this.settings = JSON.parse(settingStr);
-		}catch(e){
-			soui4.log("read settings.json failed!");
-		}
-		if(this.settings == undefined) this.settings={};
-		if(this.settings.video_path == undefined){
-			this.settings.video_path = soui4.getSpecialPath("video") + "\\sliveplayer";
-			os.mkdir(this.settings.video_path);
-		}
 		//enable dropdrop.
 		this.dropTarget = new soui4.SDropTarget();
 		this.dropTarget.cbHandler = this;
@@ -834,6 +865,12 @@ class CMainDlg extends soui4.JsHostDialog {
 			os.clearTimeout(this.timer);
 		}
 		this.DestroyWindow();
+
+		//save to file.
+		let f = std.open(g_WordDir+"\\settings.json", "w");
+		let settingStr = JSON.stringify(this.settings);
+		f.puts(settingStr);
+		f.close();
 	}
 
 	onBtnStop(e){
@@ -940,6 +977,11 @@ function main(inst,workDir,args)
 	g_WordDir = workDir;
 	let theApp = soui4.GetApp();
 	let souiFac = soui4.CreateSouiFactory();
+	let trMgr = soui4.CreateTranslatorMgr();
+	if(trMgr!=0){
+		theApp.SetTranslator(trMgr);
+		trMgr.Release();
+	}
 	//*
 	let resProvider = souiFac.CreateResProvider(1);
 	soui4.InitFileResProvider(resProvider,workDir + "\\uires");

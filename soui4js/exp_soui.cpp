@@ -78,6 +78,7 @@ namespace SOUI {
 		Exp_IHttpClient(module);
 		Exp_IImage(module);
 		Exp_ICtrls(module);
+		Exp_ITranslator(module);
 		Exp_SStringA(module);
 		Exp_SStringW(module);
 		Exp_JsHostWnd(module);

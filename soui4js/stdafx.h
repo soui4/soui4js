@@ -10,5 +10,6 @@
 #define _WIN32_WINNT 0x0602
 #endif // WINVER
 
+#define ENABLE_SOBJ_XML 0	//using release config of soui. 
 #include <souistd.h>
 
