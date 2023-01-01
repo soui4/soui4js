@@ -57,14 +57,14 @@
     <ClCompile>
       <AdditionalIncludeDirectories>.;..\qjsbind;..\depends\quickjs\include;..\depends\soui4\soui\include;..\depends\soui4\utilities\include;..\depends\soui4\config;..\depends\soui4\components;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
-      <AssemblerListingLocation>..\..\obj\release\</AssemblerListingLocation>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <DisableSpecificWarnings>4100;4101;4102;4189;4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <ExceptionHandling>Sync</ExceptionHandling>
       <ForcedIncludeFiles>src/stdafx.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <PreprocessToFile>false</PreprocessToFile>
       <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
-      <ObjectFileName>..\..\obj\release\</ObjectFileName>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
       <Optimization>MinSpace</Optimization>
       <PrecompiledHeaderOutputFile>$(IntDir)soui4js.pch</PrecompiledHeaderOutputFile>
       <PrecompiledHeaderFile>src/stdafx.h</PrecompiledHeaderFile>
@@ -102,14 +102,14 @@
     <ClCompile>
       <AdditionalIncludeDirectories>.;..\qjsbind;..\depends\quickjs\include;..\depends\soui4\soui\include;..\depends\soui4\utilities\include;..\depends\soui4\config;..\depends\soui4\components;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
-      <AssemblerListingLocation>..\..\obj\debug\</AssemblerListingLocation>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <DisableSpecificWarnings>4100;4101;4102;4189;4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <ExceptionHandling>Sync</ExceptionHandling>
       <ForcedIncludeFiles>src/stdafx.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <PreprocessToFile>false</PreprocessToFile>
       <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
-      <ObjectFileName>..\..\obj\debug\</ObjectFileName>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
       <Optimization>Disabled</Optimization>
       <PrecompiledHeaderOutputFile>$(IntDir)soui4jsd.pch</PrecompiledHeaderOutputFile>
       <PrecompiledHeaderFile>src/stdafx.h</PrecompiledHeaderFile>
