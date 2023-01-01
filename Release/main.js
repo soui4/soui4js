@@ -518,6 +518,9 @@ class CMainDlg extends soui4.JsHostDialog {
 		if(this.settings.lang_en == undefined){
 			this.settings.lang_en = true;
 		}
+		if(this.settings.volume == undefined){
+			this.settings.volume = 80;//init to 80%
+		}
 		//init lang
 		let theApp = soui4.GetApp();
 		let trModule = theApp.LoadTranslator(this.settings.lang_en?"lang:lang_en":"lang:lang_cn");
@@ -527,10 +530,6 @@ class CMainDlg extends soui4.JsHostDialog {
 		trMgr.SetLanguage(langName.c_str());
 		theApp.InstallTranslator(trModule);
 		trModule.Release();
-
-		if(this.settings.volume == undefined){
-			this.settings.volume = 80;//init to 80%
-		}
 
 		this.onMsg = this.onMessage;
 		this.onEvt = this.onEvent;
@@ -834,7 +833,12 @@ class CMainDlg extends soui4.JsHostDialog {
 
 		let wnd_check_room = this.FindIChildByName("prog_check_room");
 		this.prog_check_room = soui4.QiIProgress(wnd_check_room);//save IProgress
-
+		
+		let slider_vol = this.FindIChildByName("slider_volume");
+		let volCtrl = soui4.QiIProgress(slider_vol);
+		volCtrl.SetValue(this.settings.volume);
+		volCtrl.Release();
+		
 		this.tvAdapter.loadRoomList();//load room list.
 		this.showRoom = true;
 	}
