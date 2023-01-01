@@ -103,4 +103,28 @@
      	<translation>视频保存位置:</translation>
      </message>
   </context>
+  <context name="dlg_add_favor">
+  	<message>
+  	  <source>live platform:</source>
+  	  <translation>直播平台:</translation>
+  	</message>
+   	<message>
+  	  <source>room id:</source>
+  	  <translation>房间ID:</translation>
+  	</message> 	
+   	<message>
+  	  <source>room name:</source>
+  	  <translation>房间名称:</translation>
+  	</message> 	
+  </context>
+  <context name="dlg_input_filter">
+  	<message>
+  	  <source>input filter param</source>
+  	  <translation>输入视频滤镜参数</translation>
+  	</message>
+   	<message>
+  	  <source>filter param:</source>
+  	  <translation>滤镜参数:</translation>
+  	</message> 	
+  </context>
 </language>

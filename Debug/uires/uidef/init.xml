@@ -17,5 +17,6 @@
 
   <objattr>
   	<link class="link.web"/>
+  	<sliderbar bkgndSkin="skin_slider_back" posSkin="skin_slider_fore"/>
   </objattr>
 </UIDEF>

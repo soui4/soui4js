@@ -19,8 +19,15 @@
 		<solid color="@color/red"/>
 	</shape>
 	<colorrect name="skin_url_bk" cornerPercent="0.5" normal="@color/red"/>
-	<imglist name="skin_btn_config" src="img:png_btn_config" states="4"/>
+	<imglist name="skin_btn_config" src="img:png_btn_config" states="3"/>
 	<imglist name="skin_btn_pause" src="img:png_btn_pause" states="4"/>
 	<imglist name="skin_btn_play" src="img:png_btn_play" states="4"/>
 	<imglist name="skin_btn_record" src="img:png_btn_record" states="3"/>
+	<imglist name="skin_btn_about" src="img:png_btn_about" states="4"/>
+	<imglist name="skin_btn_stop" src="img:png_btn_stop" states="4"/>
+	<imglist name="skin_btn_filter" src="img:png_btn_filter" states="4"/>
+	
+	<imgframe name="skin_slider_back" src="img:png_slider_back" margin="10,0,10,0" tile="1"/>
+	<imgframe name="skin_slider_fore" src="img:png_slider_fore" margin="10,0,10,0" tile="1"/>
+	
 </skin>

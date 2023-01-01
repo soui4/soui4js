@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <SOUI name="add_favor" title="@string/add_favor" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" margin="5,5,5,5"  resizable="1" wndType="normal"
 translucent="1"
+trCtx="dlg_add_favor"
 >
   <root skin="_skin.sys.wnd.bkgnd" cache="1"  width="300" height="200">
     <caption pos="0,0,-0,30" show="1" font="adding:0">
@@ -10,16 +11,16 @@ translucent="1"
     </caption>
     <window pos="5,[2,-5,-5" layout="vbox" padding="5,5,5,10" interval="5">
 		<window size="-2,-1" layout="gridlayout" columnCount="2" xGravity="fill" yGravity="fill" xInterval="5" yInterval="5">
-			<text text="直播平台:"/>
+			<text text="live platform:"/>
 			<combobox name="cbx_platform" size="0,30" columnWeight="1" margin="1,1" ncskin="_skin.sys.border">
 				<dropdownStyle>
 					<root colorBkgnd="#ffffff"/>
 				</dropdownStyle>
 				<liststyle itemHeight="30" colorText="#000000" colorSelText="#FFFFFF" colorItemBkgnd="#FFFFFF" colorItemSelBkgnd="#000088" />
 			</combobox>
-			<text text="房间ID:"/>
+			<text text="room id:"/>
 			<edit name="edit_room_id" size="0,30" weight="1" margin="1,1"/>
-			<text text="房间名称:"/>
+			<text text="room name:"/>
 			<edit name="edit_room_desc" size="0,30" weight="1" margin="1,1"/>
 		</window>
 		<window size="0,0" weight="1"/>

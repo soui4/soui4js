@@ -12,8 +12,8 @@ trCtx="dlg_main"
 		<img id="sysid_icon" skin="skin_logo"/>
 		<text id="sysid_title">@string/title</text>
 		<window size="0,0" weight="1"/>
-		<button size="50,28" name="btn_about" text="About"/>
-		<imgbtn size="24,24" name="btn_settings" skin="skin_btn_config" tip="@string/settings"/>
+		<imgbtn size="24,24" name="btn_about" tip="About" skin="skin_btn_about"/>
+		<imgbtn size="18,18" name="btn_settings" skin="skin_btn_config" tip="@string/settings"/>
 		<imgbtn id="sysid_min" skin="_skin.sys.btn.minimize" animate="1" />
 		<window>
 			<imgbtn id="sysid_max" skin="_skin.sys.btn.maximize"  pos="0,0" animate="1" />
@@ -41,31 +41,28 @@ trCtx="dlg_main"
 		<window pos="0,0" size="-2,-2" layout="vbox" visible="0" name="sdl_front">
 			<window size="0,0" weight="1" visible="0"/>
 			<window size="-2,60" name="pane_ctrl" layout="vbox" gravity="center" colorBkgnd="@color/gray" alpha="200">
-				<window size="-2,0" weight="1" layout="hbox" interval="5">
+				<window size="-2,-1" layout="hbox" interval="5">
+					<!--进度条-->
+					<sliderbar size="0,-2" weight="1" name="slider_prog" min="0" max="100" value="0"/>
+					<text name="txt_duration" colorText="@color/white"/>
+				</window>
+				<window size="-2,0" weight="1" layout="hbox" interval="5" gravity="center">
 					<window size="0,0" weight="1"/>
+					<imgbtn size="30,30" name="btn_stop" tip="stop" skin="skin_btn_stop"/>
 					<window size="-1,-1">
 						<imgbtn pos="0,0,@30,@30" name="btn_pause" skin="skin_btn_pause"/>
 						<imgbtn pos="0,0,@30,@30" name="btn_resume" skin="skin_btn_play" visible="false"/>
 					</window>
-					<button size="100,-2" name="btn_stop" text="stop"/>
-					<button size="100,-2" name="btn_setFilter" text="Set Filter"/>
-					<window size="100,-2">
-						<button pos="0,0,-0,-0" name="btn_record_start" text="Record"/>
-						<button pos="0,0,-0,-0" name="btn_record_stop"  visible="0" layout="hbox" gravity="center" interval="5">
-							<window size="0,0" weight="1"/>
-							<text text="Stop"/>
-							<img size="20,20" name="indicator_recording" skin="skin_recording"/>
-							<window size="0,0" weight="1"/>
-						</button>
+					<window size="30,30">
+						<imgbtn pos="0,0,-0,-0" name="btn_record_start" tip="Record" skin="skin_btn_record"/>
+						<window pos="0,0,-0,-0" name="btn_record_stop"  visible="0" tip="stop record">
+							<img pos="|0,|0,@24,@24" offset="-0.5,-0.5" name="indicator_recording" skin="skin_recording"/>
+						</window>
 					</window>
-					<window size="0,0" weight="1"/>
-				</window>
-				<window size="-2,0" weight="1" layout="hbox" interval="5">
-					<!--进度条-->
-					<sliderbar size="0,-2" weight="1" name="slider_prog" min="0" max="100" value="0"/>
-					<text name="txt_duration"/>
 					<text text="Volume:"/>
 					<sliderbar size="100,-2" name="slider_volume" min="0" max="100" value="80"/>
+					<imgbtn size="30,30" name="btn_setFilter" tip="Set Filter" skin="skin_btn_filter"/>
+					<window size="0,0" weight="1"/>
 				</window>
 			</window>
 		</window>

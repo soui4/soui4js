@@ -32,6 +32,13 @@
 	<file name="png_btn_pause" path="image\btn_pause.png"/>
 	<file name="png_btn_play" path="image\btn_play.png"/>
 	<file name="png_btn_record" path="image\btn_record.png"/>
+	<file name="png_btn_about" path="image\btn_about.png"/>
+	<file name="png_btn_stop" path="image\btn_stop.png"/>
+	<file name="png_btn_filter" path="image\btn_filter.png"/>
+	<file name="png_slider_pos" path="image\slider_pos.png"/>
+	<file name="png_slider_fore" path="image\slider_fore.png"/>
+	<file name="png_slider_back" path="image\slider_back.png"/>
+
   </IMG>
   <ICON>
     <file name="ICON_LOGO"  path="image\sliveplayer.ico"/>

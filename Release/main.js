@@ -559,7 +559,6 @@ class CMainDlg extends soui4.JsHostDialog {
 		soui4.log("state:"+state+" reason:"+reason);
 		this.state=state;
 		if(state == 4){//playing
-			soui4.log("start timer of 100ms");
 			this.FindIChildByName("btn_resume").SetVisible(false,true);
 			this.FindIChildByName("btn_pause").SetVisible(true,true);
 		}else if(state==6){//stoped
