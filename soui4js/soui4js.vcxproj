@@ -142,14 +142,8 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="exports\md5.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="exp_soui.cpp">
-      <ShowIncludes Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ShowIncludes>
-      <ShowIncludes Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ShowIncludes>
-    </ClCompile>
+    <ClCompile Include="exports\md5.cpp" />
+    <ClCompile Include="exp_soui.cpp" />
     <ClCompile Include="soui4js.cpp" />
     <ClCompile Include="stdafx.cpp">
       <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -164,6 +158,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="exports\exp_basic.h" />
+    <ClInclude Include="exports\exp_enums.h" />
     <ClInclude Include="exports\exp_EvtHandlerProxy.h" />
     <ClInclude Include="exports\exp_IAdapter.h" />
     <ClInclude Include="exports\exp_IAnimation.h" />

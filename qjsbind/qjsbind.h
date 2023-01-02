@@ -60,13 +60,20 @@ public:
 		return JsClass<T>(context_, this, name);
 	}
 
+	bool ExportEnum(const char* name, int value) {
+		JSValue data = JS_NewInt32(context_, value);
+		return Export(name, data);
+	}
+
 	Value GetImportMeta();
 
 	JSModuleDef* module() {
 		return module_;
 	}
 
-	inline Context* context();
+	inline JSContext* context() {
+		return context_;
+	}
 private:
 	QJS_DISALLOW_COPY_AND_ASSIGN(Module);
 	static int OnInit(JSContext* ctx, JSModuleDef* m);

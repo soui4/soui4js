@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include <qjsbind.h>
 #include <souistd.h>
 #include <interface/SFactory-i.h>
@@ -6,6 +7,7 @@ using namespace SOUI;
 using namespace qjsbind;
 
 #include "exports/exp_basic.h"
+#include "exports/exp_enums.h"
 #include "exports/exp_IObjRef.h"
 #include "exports/exp_IString.h"
 #include "exports/exp_IXml.h"
@@ -51,7 +53,7 @@ namespace SOUI {
 		qjsbind::Module* module = context->NewModule("soui4");
 		Exp_Global(module);
 		Exp_Basic(module);
-
+		Exp_SEnum(module);
 		Exp_IObjRef(module);
 		Exp_IStringA(module);
 		Exp_IStringW(module);
