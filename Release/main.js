@@ -292,7 +292,7 @@ class RoomTvAdapter extends soui4.STvAdapter{
 
 	initFavorList(){
 		let iRoom = this.roomList.length;
-		let itemFavorRoot= this.InsertItem(iRoom,0xffff0000,0xffff0001); //--0xffff0000 == STVI_ROOT, 0xffff0001==STVI_FIRST
+		let itemFavorRoot= this.InsertItem(iRoom,soui4.STVI_ROOT,soui4.STVI_FIRST);
 		iRoom++;
 		for(let i=0;i<this.favorList.length;i++){
 			let itemFavor= this.InsertItem(iRoom+i,itemFavorRoot,0xffff0002);//favor id range from [-n,-1], -1 is favor root
@@ -330,14 +330,14 @@ class RoomTvAdapter extends soui4.STvAdapter{
 				}
 
 
-				let itemPlatform= this.InsertItem(iRoom,0xffff0000,0xffff0002); //--0xffff0000 == STVI_ROOT, 0xffff0002==STVI_LAST
+				let itemPlatform= this.InsertItem(iRoom,soui4.STVI_ROOT,soui4.STVI_LAST); 
 				this.roomList[iRoom]={platform:platformName,id:-2,desc:platformName,"url_path":url_path,"item":itemPlatform,"url":null,"hot":0};//save item to roomList
 				iRoom++;
 				let xmlType=xmlPlatform.FirstChild();
 				
 				while(!xmlType.IsEmpty()){
 					let typeName=xmlType.FirstAttribute().Value();
-					let itemType= this.InsertItem(iRoom,itemPlatform,0xffff0002); //--0xffff0000 == STVI_ROOT, 0xffff0002==STVI_LAST
+					let itemType= this.InsertItem(iRoom,itemPlatform,soui4.STVI_LAST); 
 					this.roomList[iRoom]={platform:platformName,id:-1,desc:typeName,"url_path":url_path,"item":itemType,"url":null,"hot":0};//save item to roomList
 					iRoom++;
 
@@ -351,7 +351,7 @@ class RoomTvAdapter extends soui4.STvAdapter{
 						{
 							hot=parseInt(hotAttr.Value());
 						}
-						let item = this.InsertItem(iRoom,itemType,0xffff0002);
+						let item = this.InsertItem(iRoom,itemType,soui4.STVI_LAST);
 						this.roomList[iRoom]={platform:platformName,id:roomId,desc:roomDesc,"url_path":url_path,"item":item,"url":null,"hot":hot};//save item to roomList
 						iRoom++;
 						xmlRoom = xmlRoom.NextSibling();

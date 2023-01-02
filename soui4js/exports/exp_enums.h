@@ -5,7 +5,8 @@
 #include <core/SDefine.h>
 using namespace SOUI;
 
-#define SEnum(x) module->ExportEnum(#x, x)
+#define SEnum(x) module->ExportEnumInt32(#x, x)
+#define SEnum2(x) module->ExportEnumUint32(#x, x)
 
 void Exp_SEnum(qjsbind::Module* module){
 //soui events
@@ -87,8 +88,8 @@ SEnum(EVT_SELECTMENU);
 SEnum(EVT_POPMENU);
 SEnum(EVT_EXTERNAL_BEGIN);
 
-SEnum(STVI_ROOT);
-SEnum(STVI_FIRST);
-SEnum(STVI_LAST);
+SEnum2(STVI_ROOT);
+SEnum2(STVI_FIRST);
+SEnum2(STVI_LAST);
 
 }

@@ -60,8 +60,13 @@ public:
 		return JsClass<T>(context_, this, name);
 	}
 
-	bool ExportEnum(const char* name, int value) {
+	bool ExportEnumInt32(const char* name, int value) {
 		JSValue data = JS_NewInt32(context_, value);
+		return Export(name, data);
+	}
+	
+	bool ExportEnumUint32(const char* name, int value) {
+		JSValue data = JS_NewUint32(context_, value);
 		return Export(name, data);
 	}
 
