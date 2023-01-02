@@ -38,7 +38,7 @@ class SettingsDialog extends soui4.JsHostDialog{
 			radio_lang.SetCheck(true);//check current lang.
 		}else if(e.GetID()==8001)//event_exit
 		{
-		}else if(e.GetID()==10000 && e.Sender().GetName()=="btn_pick_video_path"){
+		}else if(e.GetID()==soui4.EVT_CMD && e.Sender().GetName()=="btn_pick_video_path"){
 			this.onBtnPickVideoPath();
 		}else if(e.GetID()==(8100 + 7) && (e.Sender().GetID()==100 || e.Sender().GetID()==101)){
 			//EVT_STATECHANGED
@@ -185,8 +185,8 @@ class RoomTvAdapter extends soui4.STvAdapter{
 		let roomInfo = this.getRoomInfo(iRoom);
 		let txt = pItem.FindIChildByName("txt_label");		
 		txt.SetWindowText(roomInfo.desc);
-		soui4.SConnect(pItem,10000 + 11,this,this.onItemDbClick);
-		soui4.SConnect(pItem,10000 + 8,this,this.onItemRClick);
+		soui4.SConnect(pItem,soui4.EVT_ITEMPANEL_DBCLICK,this,this.onItemDbClick);
+		soui4.SConnect(pItem,soui4.EVT_ITEMPANEL_RCLICK,this,this.onItemRClick);
 
 		let img = pItem.FindIChildByName("img_state");
 		let iImg = soui4.QiIImageWnd(img);
@@ -626,30 +626,30 @@ class CMainDlg extends soui4.JsHostDialog {
 	
 	onEvent(e){
 		let evtId=e.GetID();
-		if(evtId == 10000 && e.Sender().GetName()=="btn_close"){
+		if(evtId == soui4.EVT_CMD && e.Sender().GetName()=="btn_close"){
 			this.onBtnClose();
 			return true;
-		}else if(evtId==8112 && e.Sender().GetName()=="curtain_left")//
+		}else if(evtId==soui4.EVT_ANIMATION_STOP && e.Sender().GetName()=="curtain_left")//
 		{
 			soui4.log("on animation stop");
 			if(this.playing){
 				this.FindIChildByName("curtain_left").SetVisible(false,true);
 				this.FindIChildByName("curtain_right").SetVisible(false,true);
 			}
-		}else if(evtId==17000 &&e.Sender().GetName()=="slider_prog"){
+		}else if(evtId==soui4.EVT_SLIDER_POS &&e.Sender().GetName()=="slider_prog"){
 			let evtPos = soui4.toEventSliderPos(e);
 			this.vodPlayer.Seek(evtPos.nPos);
-		}else if(evtId==17000 &&e.Sender().GetName()=="slider_volume"){
+		}else if(evtId==soui4.EVT_SLIDER_POS &&e.Sender().GetName()=="slider_volume"){
 			let evtPos = soui4.toEventSliderPos(e);
 			this.vodPlayer.SetVolume(evtPos.nPos);
 			this.settings.volume = evtPos.nPos;
 		}
-		else if(evtId == 10000 && e.Sender().GetName()=="chk_enable_subtitle")
+		else if(evtId == soui4.EVT_CMD && e.Sender().GetName()=="chk_enable_subtitle")
 		{
 			let subtitles = this.FindIChildByName("scroll_subtitles");
 			let pChk = soui4.toSWindow(e.Sender());
 			subtitles.SetVisible(pChk.IsChecked(),true);
-		}else if(evtId == 15004 && e.Sender().GetName()=="room_tree"){
+		}else if(evtId == soui4.EVT_TC_DBCLICK && e.Sender().GetName()=="room_tree"){
 			//15004 == EVT_TC_DBCLICK
 			let tcDbClick = soui4.toEventTCDbClick(e);
 			let treeWnd = soui4.toSWindow(e.Sender());
@@ -658,11 +658,11 @@ class CMainDlg extends soui4.JsHostDialog {
 			if(iRoom!=-1){
 				this.requestRoomUrl(iRoom);
 			}
-		}else if(evtId==10000 &&e.Sender().GetName()=="btn_about"){
+		}else if(evtId==soui4.EVT_CMD &&e.Sender().GetName()=="btn_about"){
 			this.onBtnAbout(e);
-		}else if(evtId==10000 &&e.Sender().GetName()=="btn_settings"){
+		}else if(evtId==soui4.EVT_CMD &&e.Sender().GetName()=="btn_settings"){
 			this.onBtnSettings();
-		}else if(evtId==9000 &&e.Sender().GetName()=="wnd_room_bookmark") //EVT_MOUSE_HOVER
+		}else if(evtId==soui4.EVT_MOUSE_HOVER &&e.Sender().GetName()=="wnd_room_bookmark") //EVT_MOUSE_HOVER
 		{
 			if(this.hideRoomListTimer!=undefined)
 			{
@@ -674,7 +674,7 @@ class CMainDlg extends soui4.JsHostDialog {
 					this.switchRoomList(true);
 					this.showRoomListTimer=undefined;
 				},50,this);
-		}else if(evtId == 9001 && e.Sender().GetName()=="wnd_roomlist_container")//EVT_MOUSE_LEAVE
+		}else if(evtId == soui4.EVT_MOUSE_LEAVE && e.Sender().GetName()=="wnd_roomlist_container")//EVT_MOUSE_LEAVE
 		{
 			if(this.showRoomListTimer!=undefined)
 			{
@@ -686,10 +686,10 @@ class CMainDlg extends soui4.JsHostDialog {
 					this.switchRoomList(false);
 					this.hideRoomListTimer = undefined;
 				},50,this);			
-		}else if(evtId==9000 &&e.Sender().GetName()=="wnd_root") //EVT_MOUSE_HOVER
+		}else if(evtId==soui4.EVT_MOUSE_HOVER &&e.Sender().GetName()=="wnd_root") //EVT_MOUSE_HOVER
 		{
 			this.switchCtrlPane(true);
-		}else if(evtId == 9001 && e.Sender().GetName()=="wnd_root")//EVT_MOUSE_LEAVE
+		}else if(evtId == soui4.EVT_MOUSE_LEAVE && e.Sender().GetName()=="wnd_root")//EVT_MOUSE_LEAVE
 		{
 			this.switchCtrlPane(false);
 		}
@@ -815,15 +815,15 @@ class CMainDlg extends soui4.JsHostDialog {
 		let dropAccept = this.FindIChildByName("sdl_back");		
 		dropAccept.RegisterDragDrop(this.dropTarget);
 		
-		this.connect("btn_play",10000, this.onBtnPlay);
-		this.connect("btn_stop",10000, this.onBtnStop);
-		this.connect("btn_pause",10000, this.onBtnPause);
-		this.connect("btn_resume",10000, this.onBtnResume);
-		this.connect("btn_setFilter",10000, this.onSetFilter);
-		this.connect("btn_reflesh_room",10000, this.onBtnRefleshRoom);
-		this.connect("btn_add_room",10000,this.onBtnAddRoom);
-		this.connect("btn_record_start",10000,this.onBtnStartRecord);
-		this.connect("btn_record_stop",10000,this.onBtnStopRecord);
+		this.connect("btn_play",soui4.EVT_CMD, this.onBtnPlay);
+		this.connect("btn_stop",soui4.EVT_CMD, this.onBtnStop);
+		this.connect("btn_pause",soui4.EVT_CMD, this.onBtnPause);
+		this.connect("btn_resume",soui4.EVT_CMD, this.onBtnResume);
+		this.connect("btn_setFilter",soui4.EVT_CMD, this.onSetFilter);
+		this.connect("btn_reflesh_room",soui4.EVT_CMD, this.onBtnRefleshRoom);
+		this.connect("btn_add_room",soui4.EVT_CMD,this.onBtnAddRoom);
+		this.connect("btn_record_start",soui4.EVT_CMD,this.onBtnStartRecord);
+		this.connect("btn_record_stop",soui4.EVT_CMD,this.onBtnStopRecord);
 		//init room treeview.
 		let room_tv = this.FindIChildByName("room_tv");
 		let room_itv = soui4.QiITreeView(room_tv);
