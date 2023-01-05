@@ -34,7 +34,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v140_xp</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
@@ -206,6 +206,7 @@
     <ClCompile Include="exctrls\SRoundWnd.cpp" />
     <ClCompile Include="exctrls\SScrollSubtitles.cpp" />
     <ClCompile Include="exctrls\SScrollText.cpp" />
+    <ClCompile Include="exctrls\SVText.cpp" />
     <ClCompile Include="extctrl.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -239,6 +240,7 @@
     <ClInclude Include="exctrls\SRoundWnd.h" />
     <ClInclude Include="exctrls\SScrollSubtitles.h" />
     <ClInclude Include="exctrls\SScrollText.h" />
+    <ClInclude Include="exctrls\SVText.h" />
     <ClInclude Include="exp_ctrls.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />

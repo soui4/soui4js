@@ -87,7 +87,7 @@ trCtx="dlg_main"
 				</window>
 			</window>
 			<window size="-1,-1" skin="skin_room_bookmark"  name="wnd_room_bookmark" padding="5,30,5,26">
-				<text size="-1,-1" text="Ro\nom\nLi\nst" multilines="1" colorText="@color/white"/>
+				<vtext size="-1,-1" text="Room List" colorText="@color/white" font="escapement:-90"/>
 			</window>
 		</window>
 	</root>

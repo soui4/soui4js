@@ -81,8 +81,8 @@
       <translation>房间列表:</translation>
     </message>
     <message>
-      <source>Ro\nom\nLi\nst</source>
-      <translation>房\n间\n列\n表</translation>
+      <source>Room List</source>
+      <translation>房间列表</translation>
     </message>
   </context>
   <context name="dlg_settings">
