@@ -133,10 +133,11 @@ namespace SOUI
         return TRUE;
     }
 
+	SComMgr2  g_comMgr;
+
     static ITaskLoop* CreateTaskLoop() {
-        static SComMgr2 comMgr;
         ITaskLoop* pTaskLoop = NULL;
-        comMgr.CreateTaskLoop((IObjRef**)&pTaskLoop);
+        g_comMgr.CreateTaskLoop((IObjRef**)&pTaskLoop);
         return pTaskLoop;
     }
 
@@ -196,7 +197,6 @@ namespace SOUI
 			return TRUE;
 		}
 	}
-
 }
 
 EXTERN_C BOOL Soui4Js_SCreateInstance(IObjRef ** ppScript)
