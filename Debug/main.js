@@ -158,8 +158,8 @@ class RoomTvAdapter extends soui4.STvAdapter{
 		newRoom.desc = platform+"/"+desc;
 		this.favorList.push(newRoom);
 		let iRoom = this.roomList.length + 1 + this.favorList.length -1;
-		let favorRoot = this.GetChildItem(0xffff0000,true);
-		newRoom.item = this.InsertItem(iRoom,favorRoot,0xffff0002);
+		let favorRoot = this.GetChildItem(soui4.STVI_ROOT,true);
+		newRoom.item = this.InsertItem(iRoom,favorRoot,soui4.STVI_LAST);
 		this.notifyBranchChanged(favorRoot);
 		this.checkRoom(iRoom);
 		return true;
@@ -211,7 +211,7 @@ class RoomTvAdapter extends soui4.STvAdapter{
 	onItemRClick(e){
 		let pItem = soui4.toSWindow(e.Sender());
 		let itemApi = soui4.QiIItemPanel(pItem);
-		let favorRoot = this.GetChildItem(0xffff0000,true);
+		let favorRoot = this.GetChildItem(soui4.STVI_ROOT,true);
 		let hItem = itemApi.GetItemIndex();
 		let parentItem = this.GetParentItem(hItem);
 		let iRoom = this.GetItemData(hItem);
@@ -245,7 +245,7 @@ class RoomTvAdapter extends soui4.STvAdapter{
 				}else{
 					let roomInfo2 = {...roomInfo};
 					let iRoom = this.roomList.length + 1 + this.favorList.length;
-					let newItem = this.InsertItem(iRoom,favorRoot,0xffff0002);
+					let newItem = this.InsertItem(iRoom,favorRoot,soui4.STVI_LAST);
 					roomInfo2.desc = roomInfo.platform+"/"+roomInfo.desc;
 					roomInfo2.item = newItem;
 					this.favorList[this.favorList.length] = roomInfo2;
@@ -295,11 +295,11 @@ class RoomTvAdapter extends soui4.STvAdapter{
 		let itemFavorRoot= this.InsertItem(iRoom,soui4.STVI_ROOT,soui4.STVI_FIRST);
 		iRoom++;
 		for(let i=0;i<this.favorList.length;i++){
-			let itemFavor= this.InsertItem(iRoom+i,itemFavorRoot,0xffff0002);//favor id range from [-n,-1], -1 is favor root
+			let itemFavor= this.InsertItem(iRoom+i,itemFavorRoot,soui4.STVI_LAST);//favor id range from [-n,-1], -1 is favor root
 			this.favorList[i].item = itemFavor;
 		}
 		soui4.log("initFavorList:"+itemFavorRoot);
-		this.notifyBranchChanged(0xffff0000);//notify whole tree data changed.
+		this.notifyBranchChanged(soui4.STVI_ROOT);//notify whole tree data changed.
 		this.CheckRoomState(0);//check room state from 0 room
 	}
 
@@ -477,7 +477,7 @@ class RoomTvAdapter extends soui4.STvAdapter{
 		for(let i=0;i<this.favorList.length;i++){
 			this.favorList[i].url=null;
 		}
-		this.notifyBranchChanged(0xffff0000);
+		this.notifyBranchChanged(soui4.STVI_ROOT);
 		this.CheckRoomState(0);
 	}
 

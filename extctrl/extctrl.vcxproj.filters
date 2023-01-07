@@ -91,6 +91,9 @@
     <ClCompile Include="exctrls\SScrollSubtitles.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="exctrls\SVText.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -172,6 +175,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="exp_ctrls.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="exctrls\SVText.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
