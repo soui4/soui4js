@@ -90,10 +90,15 @@ public:
 		return taskLoopLoader.CreateInstance(m_strDllPath + COM_TASKLOOP, ppObj);
 	}
 
-    BOOL CreateHttpClient(IObjRef** ppObj)
-    {
-        return ipcLoader.CreateInstance(m_strDllPath + COM_HTTPCLIENT, ppObj);
-    }
+	BOOL CreateIpcObject(IObjRef **ppObj)
+	{
+		return ipcLoader.CreateInstance(m_strDllPath + COM_IPCOBJ, ppObj);
+	}
+
+	BOOL CreateHttpClient(IObjRef **ppObj)
+	{
+		return httpClientLoader.CreateInstance(m_strDllPath + COM_HTTPCLIENT, ppObj);
+	}
 protected:
     //SComLoader实现从DLL的指定函数创建符号SOUI要求的类COM组件。
     SComLoader imgDecLoader;
@@ -105,6 +110,7 @@ protected:
     SComLoader zip7ResLoader;
 	SComLoader taskLoopLoader;
 	SComLoader ipcLoader;
+    SComLoader httpClientLoader;
 
     SStringT m_strImgDecoder;
 	SStringT m_strDllPath;
