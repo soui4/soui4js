@@ -20,6 +20,7 @@
 #define COM_ZIPRESPROVIDER _T("resprovider-zip.dll")
 #define COM_7ZIPRESPROVIDER _T("resprovider-7zip.dll")
 #define COM_TASKLOOP _T("taskloop.dll")
+#define COM_IPCOBJ _T("SIpcObject.dll")
 #define COM_HTTPCLIENT _T("httpclient.dll")
 
 
