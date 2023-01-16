@@ -285,7 +285,8 @@ class RoomTvAdapter extends soui4.STvAdapter{
 		}else if(roomInfo.url != "")
 		{
 			//try to play url.
-			this.mainDlg.playUrl(roomInfo.url);
+			let title = roomInfo.platform+"/"+roomInfo.desc
+			this.mainDlg.playUrl(roomInfo.url,title);
 		}
 		return true;
 	}
@@ -901,6 +902,7 @@ class CMainDlg extends soui4.JsHostDialog {
 			curtain_right.SetAnimation(pAniShowRight);
 			pAniShowRight.Release();
 		}
+		this.GetNcPainter().GetRoot().FindIChildByName("txt_title").SetWindowText("");
 	}
 	onBtnPlay(e){
 		let edit_url = this.FindIChildByName("edit_url");
@@ -918,12 +920,13 @@ class CMainDlg extends soui4.JsHostDialog {
 				return;
 			url = filedlg.GetFilePath();
 			edit_url.SetWindowText(url);
-			
 		}
-		this.playUrl(url);
+		let idx=url.lastIndexOf("\\");
+		let title = url.substr(idx+1);
+		this.playUrl(url,title);
 	}
 
-	playUrl(url){
+	playUrl(url,title){
 		this.FindIChildByName("sdl_back").SetVisible(false,false);
 		this.FindIChildByName("sdl_front").SetVisible(true,true);
 		//拉开幕布动画
@@ -936,9 +939,9 @@ class CMainDlg extends soui4.JsHostDialog {
 			this.FindIChildByName("curtain_right").SetAnimation(pAniHideRight);
 			pAniHideRight.Release();
 		}
-
-		soui4.log("url:"+url);
+		soui4.log("url:"+url+" title:"+title);
 		this.vodPlayer.PlayUrl(url,100);
+		this.GetNcPainter().GetRoot().FindIChildByName("txt_title").SetWindowText("["+title+"]");
 		this.playing=true;
 	}
 

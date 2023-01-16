@@ -15,7 +15,6 @@ void Exp_IHostWnd(qjsbind::Module* module)
 	jsCls.AddFunc("SetEventHandler", &IHostWnd::SetEventHandler);
 	jsCls.AddFunc("GetEventHandler", &IHostWnd::GetEventHandler);
 	jsCls.AddFunc("AnimateHostWindow", &IHostWnd::AnimateHostWindow);
-	jsCls.AddFunc("GetRoot", &IHostWnd::GetIRoot);
 	jsCls.AddFunc("GetPresenter", &IHostWnd::GetPresenter);
 	jsCls.AddFunc("SetPresenter", &IHostWnd::SetPresenter);
 	jsCls.AddFunc("GetMsgLoop", &IHostWnd::GetMsgLoop);

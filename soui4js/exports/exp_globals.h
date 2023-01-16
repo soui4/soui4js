@@ -127,11 +127,19 @@ BOOL SetXmlTranslator(IApplication * pApp,LPCSTR xmlId) {
 	return bRet;
 }
 
-HINSTANCE SShellExecute(LPCSTR pszDir) {
+HINSTANCE SFork(LPCSTR pszDir) {
 	TCHAR szHostPath[MAX_PATH];
 	::GetModuleFileName(NULL, szHostPath, MAX_PATH);
 	SStringT strApp = S_CA2T(pszDir, CP_UTF8);
 	return ::ShellExecute(NULL,_T("open"),szHostPath,strApp.c_str(),NULL,SW_SHOWNORMAL);
+}
+
+HINSTANCE SShellExecute(HWND hWnd,LPCSTR pszOp,LPCSTR pszFile,LPCSTR pszParam,LPCSTR pszDir,int show) {
+	SStringT strOp = S_CA2T(pszOp, CP_UTF8);
+	SStringT strFile = S_CA2T(pszFile, CP_UTF8);
+	SStringT strParam = S_CA2T(pszParam, CP_UTF8);
+	SStringT strDir = S_CA2T(pszDir, CP_UTF8);
+	return ::ShellExecute(hWnd, strOp, strFile, strParam, strDir, show);
 }
 
 std::string MDPrint(unsigned char digest[16])
@@ -275,6 +283,7 @@ void Exp_Global(qjsbind::Module* module)
 	module->ExportFunc("SetXmlTranslator", &SetXmlTranslator);
 	module->ExportFunc("SConnect", &SConnect);
 	module->ExportFunc("SMessageBox", &SMessageBoxA);
+	module->ExportFunc("SFork", &SFork);
 	module->ExportFunc("SShellExecute", &SShellExecute);
 	module->ExportFunc("Md5", &Md5);
 	module->ExportFunc("FileMd5", &FileMd5);
