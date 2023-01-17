@@ -32,6 +32,7 @@ using namespace qjsbind;
 #include "exports/exp_INcPainter.h"
 #include "exports/exp_IHttpClient.h"
 #include "exports/exp_IImage.h"
+#include "exports/exp_ILogMgr.h"
 #include "exports/exp_SString.h"
 #include "exports/exp_SHostWnd.h"
 #include "exports/exp_MsgHandlerProxy.h"
@@ -81,6 +82,7 @@ namespace SOUI {
 		Exp_IImage(module);
 		Exp_ICtrls(module);
 		Exp_ITranslator(module);
+		Exp_ILogMgr(module);
 		Exp_SStringA(module);
 		Exp_SStringW(module);
 		Exp_JsHostWnd(module);

@@ -543,6 +543,7 @@ class CMainDlg extends soui4.JsHostDialog {
 		this.vodPlayer.onPlayPosition = this.onPlayPosition;
 		this.vodPlayer.onRecordStart = this.onRecordStart;
 		this.vodPlayer.onRecordStop = this.onRecordStop;
+		this.vodPlayer.EnableLog(true);//enable or disable vodplayer's log
 		let sdlPresenter = jsplayer.CreateSdlPresenter(this);
 		this.SetPresenter(sdlPresenter);
 		this.vodPlayer.Init(sdlPresenter);
@@ -988,6 +989,12 @@ function main(inst,workDir,args)
 		theApp.SetTranslator(trMgr);
 		trMgr.Release();
 	}
+	let logMgr = soui4.CreateLogMgr();
+	if(logMgr != 0){
+		theApp.SetLogManager(logMgr);
+		logMgr.setLoggerName("sliveplayer");
+		logMgr.start();
+	}
 	/*
 	let resProvider = souiFac.CreateResProvider(1);
 	soui4.InitFileResProvider(resProvider,workDir + "\\uires");
@@ -1013,6 +1020,10 @@ function main(inst,workDir,args)
 	let ret= theApp.Run(hostWnd.GetHwnd());
 	extctrl.UnregisterCtrls(theApp);
 	soui4.log("js quit");
+	if(logMgr!=0){
+		logMgr.stop();
+		logMgr.Release();
+	}
 	return ret;
 }
 

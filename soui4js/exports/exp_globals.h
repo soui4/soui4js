@@ -16,7 +16,7 @@ void Slog(const char* szLog) {
 
 void Slog2(const char* szLog,int level) {
 	SStringW str = S_CA2W(szLog, CP_UTF8);
-	SLOG("qjs",level,0) << str.c_str();
+	SLOG("qjs",level) << str.c_str();
 }
 
 BOOL InitFileResProvider(IResProvider* pResProvider, const char* path)
@@ -57,11 +57,13 @@ int SMessageBoxA(HWND hOwner, LPCSTR pszText, LPCSTR pszTitle, UINT uType) {
 	return SMessageBox(hOwner, strText, strTitle, uType);
 }
 
-SComMgr2 comMgr;
+namespace SOUI {
+	extern SComMgr2  g_comMgr;
+}
 
 IResProvider* CreateZipResProvider(IApplication * pApp,LPCSTR pszPath, LPCSTR pszPsw) {
 	IResProvider* pRet = NULL;
-	if (comMgr.CreateResProvider_ZIP((IObjRef**)&pRet))
+	if (g_comMgr.CreateResProvider_ZIP((IObjRef**)&pRet))
 	{
 		SStringT strPath = S_CA2T(pszPath, CP_UTF8);
 		IRenderFactory* pRenderFactory = pApp?pApp->GetRenderFactory():NULL;
@@ -78,7 +80,7 @@ IResProvider* CreateZipResProvider(IApplication * pApp,LPCSTR pszPath, LPCSTR ps
 
 IResProvider* Create7ZResProvider(IApplication* pApp, LPCSTR pszPath, LPCSTR pszPsw) {
 	IResProvider* pRet = NULL;
-	if (comMgr.CreateResProvider_7ZIP((IObjRef**)&pRet))
+	if (g_comMgr.CreateResProvider_7ZIP((IObjRef**)&pRet))
 	{
 		SStringT strPath = S_CA2T(pszPath, CP_UTF8);
 		IRenderFactory* pRenderFactory = pApp? pApp->GetRenderFactory():NULL;
@@ -95,13 +97,19 @@ IResProvider* Create7ZResProvider(IApplication* pApp, LPCSTR pszPath, LPCSTR psz
 
 ITranslatorMgr* CreateTranslatorMgr() {
 	ITranslatorMgr* pRet = NULL;
-	comMgr.CreateTranslator((IObjRef**)&pRet);
+	g_comMgr.CreateTranslator((IObjRef**)&pRet);
 	return pRet;
 }
 
 IHttpClient* CreateHttpClient() {
 	IHttpClient* pRet = NULL;
-	comMgr.CreateHttpClient((IObjRef**)&pRet);
+	g_comMgr.CreateHttpClient((IObjRef**)&pRet);
+	return pRet;
+}
+
+ILogMgr* CreateLogMgr() {
+	ILogMgr* pRet = NULL;
+	g_comMgr.CreateLog4z((IObjRef**)&pRet);
 	return pRet;
 }
 
@@ -275,40 +283,10 @@ namespace SOUI {
 	extern SComMgr2  g_comMgr;
 }
 
-void EnableLog(bool bEnable, int level) {
-	IApplication* pApp = GetApp();
-	if (bEnable) {
-		ILog4zManager* pLogMgr = pApp->GetLogManager();
-		if (!pLogMgr) {
-			if (g_comMgr.CreateLog4z((IObjRef**)&pLogMgr) && pLogMgr)
-			{
-				//uncomment next line to disable log mgr to output debug string.
-				pLogMgr->setLoggerDisplay(LOG4Z_MAIN_LOGGER_ID, false);
-				//uncomment next line to record info level log.
-				pLogMgr->setLoggerLevel(LOG4Z_MAIN_LOGGER_ID, level);
-				pLogMgr->start();
-				pApp->SetLogManager(pLogMgr);
-				pLogMgr->Release();
-			}
-		}
-		else {
-			pLogMgr->setLoggerLevel(LOG4Z_MAIN_LOGGER_ID, level);
-		}
-	}
-	else {
-		ILog4zManager *pLogMgr = pApp->GetLogManager();
-		if (pLogMgr) {
-			pLogMgr->stop();
-			pApp->SetLogManager(NULL);			
-		}
-	}
-}
-
 void Exp_Global(qjsbind::Module* module)
 {
 	module->ExportFunc("log", &Slog);
 	module->ExportFunc("log2", &Slog2);	
-	module->ExportFunc("EnableLog", &EnableLog);
 	module->ExportFunc("GetApp", &GetApp);
 	module->ExportFunc("GetActiveWindow", &GetActiveWnd);
 	module->ExportFunc("toWChar", &toWChar);
@@ -319,6 +297,7 @@ void Exp_Global(qjsbind::Module* module)
 	module->ExportFunc("Create7ZResProvider", &Create7ZResProvider);
 	module->ExportFunc("CreateTranslatorMgr", &CreateTranslatorMgr);
 	module->ExportFunc("CreateHttpClient", &CreateHttpClient);
+	module->ExportFunc("CreateLogMgr", &CreateLogMgr);	
 	module->ExportFunc("SetXmlTranslator", &SetXmlTranslator);
 	module->ExportFunc("SConnect", &SConnect);
 	module->ExportFunc("SMessageBox", &SMessageBoxA);
