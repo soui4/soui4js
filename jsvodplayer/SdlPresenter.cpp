@@ -99,6 +99,7 @@ void SdlPresenter::_OnHostResize(SIZE szHost)
 			SDL_TEXTUREACCESS_STREAMING, szHost.cx, szHost.cy);
 
 	SDL_SetTextureBlendMode(m_wndTexture, SDL_BLENDMODE_BLEND);
+	m_wndTxtEmpty = true;
 }
 
 void SdlPresenter::OnHostResize(THIS_ SIZE szHost)
@@ -117,6 +118,7 @@ void SdlPresenter::_OnHostPresent(HostTextureInfo info)
 		SDL_LockTexture(m_wndTexture, &rcSdl, &pDst, &pitch);
 		if (pDst && pitch == info.nWid * 4) {
 			memcpy(pDst, info.buf.ptr(), pitch * rcSdl.h);
+			m_wndTxtEmpty = false;
 		}
 		else {
 			SLOGW() << "_OnHostPresent error";
@@ -284,7 +286,8 @@ void SdlPresenter::UpdateRender()
 	}
 	SASSERT(m_wndTexture);
 	//render ui elements.
-	SDL_RenderCopy(m_sdlRenderer, m_wndTexture, NULL, NULL);
+	if(!m_wndTxtEmpty)
+		SDL_RenderCopy(m_sdlRenderer, m_wndTexture, NULL, NULL);
 	SDL_RenderPresent(m_sdlRenderer);
 	m_bDirty = FALSE;
 }

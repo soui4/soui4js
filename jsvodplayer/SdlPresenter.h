@@ -19,6 +19,7 @@ class SdlPresenter : public TObjRefImpl<IHostPresenter>
 	SDL_Renderer *m_sdlRenderer;
 
 	SDL_Texture * m_wndTexture;
+	bool m_wndTxtEmpty;
 	struct VideoTexture{
 		SComPtr<IAVframe> frame;
 		SDL_Texture * texture;
