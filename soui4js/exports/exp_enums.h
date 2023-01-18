@@ -95,4 +95,14 @@ SEnum2(STVI_ROOT);
 SEnum2(STVI_FIRST);
 SEnum2(STVI_LAST);
 
+SEnum2(TVC_COLLAPSE);
+SEnum2(TVC_EXPAND);
+SEnum2(TVC_TOGGLE);
+
+SEnum2(WndState_Normal);
+SEnum2(WndState_Hover);
+SEnum2(WndState_PushDown);
+SEnum2(WndState_Check);
+SEnum2(WndState_Invisible);
+SEnum2(WndState_Disable);
 }

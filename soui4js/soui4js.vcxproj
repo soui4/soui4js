@@ -168,6 +168,7 @@
     <ClInclude Include="exports\exp_IHttpClient.h" />
     <ClInclude Include="exports\exp_IImage.h" />
     <ClInclude Include="exports\exp_IInterpolator.h" />
+    <ClInclude Include="exports\exp_ILogMgr.h" />
     <ClInclude Include="exports\exp_IMenu.h" />
     <ClInclude Include="exports\exp_IMenuEx.h" />
     <ClInclude Include="exports\exp_INativeWnd.h" />

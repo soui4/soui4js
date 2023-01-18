@@ -45,7 +45,7 @@ class SettingsDialog extends soui4.JsHostDialog{
 		{ 
 			if(e.Sender().GetID()==100 || e.Sender().GetID()==101){
 				let e2 = soui4.toEventSwndStateChanged(e);
-				if((e2.dwNewState & 0x04) && !(e2.dwOldState&0x04)){
+				if((e2.dwNewState & soui4.WndState_Check) && !(e2.dwOldState&soui4.WndState_Check)){
 					//checked
 					let theApp = soui4.GetApp();
 					let useEnLang = (e.Sender().GetID()==100);//check lang_en
@@ -60,9 +60,9 @@ class SettingsDialog extends soui4.JsHostDialog{
 				}
 			}else if(e.Sender().GetName() == "chk_vodplayer_log"){
 				let e2 = soui4.toEventSwndStateChanged(e);
-				if((e2.dwNewState & 0x04) != (e2.dwOldState&0x04))
+				if((e2.dwNewState & soui4.WndState_Check) != (e2.dwOldState&soui4.WndState_Check))
 				{
-					this.mainDlg.settings.enable_vod_log = (e2.dwNewState & 0x04)>0;
+					this.mainDlg.settings.enable_vod_log = (e2.dwNewState & soui4.WndState_Check)>0;
 					this.mainDlg.vodPlayer.EnableLog(this.mainDlg.settings.enable_vod_log);
 				}
 			}
@@ -280,7 +280,19 @@ class RoomTvAdapter extends soui4.STvAdapter{
 		}
 		itemApi.Release();
 	}
-
+	
+	getRoomTitle(roomInfo){
+		let ret = roomInfo.desc;
+		let hParent =this.GetParentItem(roomInfo.item);
+		while(hParent!=soui4.STVI_ROOT){
+			let iRoom = this.GetItemData(hParent);
+			let roomInfo2 = this.getRoomInfo(iRoom);;
+			ret = roomInfo2.desc+"/"+ret;
+			hParent =this.GetParentItem(hParent);
+		}
+		return ret;
+	}
+	
 	onItemDbClick(e){
 		let pItem = soui4.toSWindow(e.Sender());
 		let pItemPanel = soui4.QiIItemPanel(pItem);
@@ -289,13 +301,13 @@ class RoomTvAdapter extends soui4.STvAdapter{
 		let iRoom = this.GetItemData(hItem);
 		let roomInfo = this.getRoomInfo(iRoom);
 		if(roomInfo.id<0){
-			this.ExpandItem(hItem,3);//toggle state.
+			this.ExpandItem(hItem,soui4.TVC_TOGGLE);//toggle state.
 		}else if(roomInfo.url==null){
 			soui4.SMessageBox(0,"wait for fetch live url,please wait a moment!","error",0);
 		}else if(roomInfo.url != "")
 		{
 			//try to play url.
-			let title = roomInfo.platform+"/"+roomInfo.desc
+			let title = this.getRoomTitle(roomInfo);
 			this.mainDlg.playUrl(roomInfo.url,title);
 		}
 		return true;
