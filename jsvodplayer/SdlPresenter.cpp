@@ -86,39 +86,30 @@ void SdlPresenter::OnHostDestroy(THIS)
 	}
 }
 
-void SdlPresenter::_OnHostResize(SIZE szHost)
-{
-	if (m_wndTexture)
-	{
-		SDL_DestroyTexture(m_wndTexture);
-		m_wndTexture = NULL;
-	}
-	//create texture for window cache
-	m_wndTexture =
-		SDL_CreateTexture(m_sdlRenderer, SDL_PIXELFORMAT_ARGB8888,
-			SDL_TEXTUREACCESS_STREAMING, szHost.cx, szHost.cy);
-
-	SDL_SetTextureBlendMode(m_wndTexture, SDL_BLENDMODE_BLEND);
-	m_wndTxtEmpty = true;
-}
-
 void SdlPresenter::OnHostResize(THIS_ SIZE szHost)
 {
-	STaskHelper::post(m_renderLoop, this, &SdlPresenter::_OnHostResize, szHost, false);
 }
 
 
 void SdlPresenter::_OnHostPresent(HostTextureInfo info)
 {
+	if (!m_wndTexture || m_szWndTexture.cx != info.nWid || m_szWndTexture.cy != info.nHei) {
+		if(m_wndTexture)
+			SDL_DestroyTexture(m_wndTexture);
+		//create texture for window cache
+		m_wndTexture = SDL_CreateTexture(m_sdlRenderer, SDL_PIXELFORMAT_ARGB8888,
+			SDL_TEXTUREACCESS_STREAMING, info.nWid, info.nHei);
+		m_szWndTexture.cx = info.nWid, m_szWndTexture.cy = info.nHei;
+		SDL_SetTextureBlendMode(m_wndTexture, SDL_BLENDMODE_BLEND);
+	}
 	if (m_wndTexture)
-	{
+	{		
 		SDL_Rect rcSdl = { 0,0,info.nWid,info.nHei };
 		void* pDst = NULL;
 		int pitch = 0;
 		SDL_LockTexture(m_wndTexture, &rcSdl, &pDst, &pitch);
 		if (pDst && pitch == info.nWid * 4) {
 			memcpy(pDst, info.buf.ptr(), pitch * rcSdl.h);
-			m_wndTxtEmpty = false;
 		}
 		else {
 			SLOGW() << "_OnHostPresent error";
@@ -286,8 +277,7 @@ void SdlPresenter::UpdateRender()
 	}
 	SASSERT(m_wndTexture);
 	//render ui elements.
-	if(!m_wndTxtEmpty)
-		SDL_RenderCopy(m_sdlRenderer, m_wndTexture, NULL, NULL);
+	SDL_RenderCopy(m_sdlRenderer, m_wndTexture, NULL, NULL);
 	SDL_RenderPresent(m_sdlRenderer);
 	m_bDirty = FALSE;
 }

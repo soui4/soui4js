@@ -19,7 +19,7 @@ class SdlPresenter : public TObjRefImpl<IHostPresenter>
 	SDL_Renderer *m_sdlRenderer;
 
 	SDL_Texture * m_wndTexture;
-	bool m_wndTxtEmpty;
+	CSize		  m_szWndTexture;
 	struct VideoTexture{
 		SComPtr<IAVframe> frame;
 		SDL_Texture * texture;
@@ -60,7 +60,6 @@ protected:
 	void _OnHeartBeat();
 	void _OnHostCreate();
 	void _OnHostDestroy();
-	void _OnHostResize(SIZE szHost);
 	void _OnHostPresent(HostTextureInfo info);
 	void _UpdateVideoCanvas(int canvasId, SComPtr<IAVframe> frame);
 public:
