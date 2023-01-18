@@ -20,6 +20,7 @@ trCtx="dlg_settings"
 			<edit name="edit_video_path" size="0,-2" weight="1" readonly="1" margin="2,2,"/>
 			<button name="btn_pick_video_path" size="80,30" text="..."/>
 		</window>
+		<check name="chk_vodplayer_log" text="enable vodplayer log"/>
     </window>
   </root>
 </SOUI>

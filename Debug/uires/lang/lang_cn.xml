@@ -102,6 +102,11 @@
      	<source>Folder for recording:</source>
      	<translation>视频保存位置:</translation>
      </message>
+     <message>
+     	<source>enable vodplayer log</source>
+     	<translation>开启播放器LOG</translation>
+     </message>
+     
   </context>
   <context name="dlg_add_favor">
   	<message>

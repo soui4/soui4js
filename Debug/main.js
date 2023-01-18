@@ -31,30 +31,40 @@ class SettingsDialog extends soui4.JsHostDialog{
 		soui4.log("new SettingsDialog");
 	}
 	onEvent(e){
-		if(e.GetID()==8000){//event_init
+		if(e.GetID()==soui4.EVT_INIT){
 			let edit_video_path = this.FindIChildByName("edit_video_path");
 			edit_video_path.SetWindowText(this.mainDlg.settings.video_path);
 			let radio_lang = this.FindIChildByID(100+(this.mainDlg.settings.lang_en?0:1));
 			radio_lang.SetCheck(true);//check current lang.
-		}else if(e.GetID()==8001)//event_exit
+			this.FindIChildByName("chk_vodplayer_log").SetCheck(this.mainDlg.settings.enable_vod_log);
+		}else if(e.GetID()==soui4.EVT_EXIT)
 		{
 		}else if(e.GetID()==soui4.EVT_CMD && e.Sender().GetName()=="btn_pick_video_path"){
 			this.onBtnPickVideoPath();
-		}else if(e.GetID()==(8100 + 7) && (e.Sender().GetID()==100 || e.Sender().GetID()==101)){
-			//EVT_STATECHANGED
-			let e2 = soui4.toEventSwndStateChanged(e);
-			if((e2.dwNewState & 0x04) && !(e2.dwOldState&0x04)){
-				//checked
-				let theApp = soui4.GetApp();
-				let useEnLang = (e.Sender().GetID()==100);//check lang_en
-				let trModule = theApp.LoadTranslator(useEnLang?"lang:lang_en":"lang:lang_cn");
-				let langName = new soui4.SStringA();
-				trModule.GetName(langName);
-				let trMgr = theApp.GetTranslator();
-				trMgr.SetLanguage(langName.c_str());
-				theApp.InstallTranslator(trModule);
-				trModule.Release();
-				this.mainDlg.settings.lang_en = useEnLang;
+		}else if(e.GetID()==soui4.EVT_STATECHANGED)
+		{ 
+			if(e.Sender().GetID()==100 || e.Sender().GetID()==101){
+				let e2 = soui4.toEventSwndStateChanged(e);
+				if((e2.dwNewState & 0x04) && !(e2.dwOldState&0x04)){
+					//checked
+					let theApp = soui4.GetApp();
+					let useEnLang = (e.Sender().GetID()==100);//check lang_en
+					let trModule = theApp.LoadTranslator(useEnLang?"lang:lang_en":"lang:lang_cn");
+					let langName = new soui4.SStringA();
+					trModule.GetName(langName);
+					let trMgr = theApp.GetTranslator();
+					trMgr.SetLanguage(langName.c_str());
+					theApp.InstallTranslator(trModule);
+					trModule.Release();
+					this.mainDlg.settings.lang_en = useEnLang;
+				}
+			}else if(e.Sender().GetName() == "chk_vodplayer_log"){
+				let e2 = soui4.toEventSwndStateChanged(e);
+				if((e2.dwNewState & 0x04) != (e2.dwOldState&0x04))
+				{
+					this.mainDlg.settings.enable_vod_log = (e2.dwNewState & 0x04)>0;
+					this.mainDlg.vodPlayer.EnableLog(this.mainDlg.settings.enable_vod_log);
+				}
 			}
 		}
 	}
@@ -502,7 +512,13 @@ class RoomTvAdapter extends soui4.STvAdapter{
 class CMainDlg extends soui4.JsHostDialog {
     constructor(resId) {
         super(resId);
-
+		//init settings.
+		this.settings = {
+		"video_path":soui4.getSpecialPath("video") + "\\sliveplayer",
+		"lang_en":true,
+		"volume":80,
+		"enable_vod_log":false
+		};
 		try{
 			let f = std.open(g_WordDir+"\\settings.json", "r");
 			let settingStr = f.readAsString();
@@ -511,17 +527,7 @@ class CMainDlg extends soui4.JsHostDialog {
 		}catch(e){
 			soui4.log("read settings.json failed!");
 		}
-		if(this.settings == undefined) this.settings={};
-		if(this.settings.video_path == undefined){
-			this.settings.video_path = soui4.getSpecialPath("video") + "\\sliveplayer";
-			os.mkdir(this.settings.video_path);
-		}
-		if(this.settings.lang_en == undefined){
-			this.settings.lang_en = true;
-		}
-		if(this.settings.volume == undefined){
-			this.settings.volume = 80;//init to 80%
-		}
+
 		//init lang
 		let theApp = soui4.GetApp();
 		let trModule = theApp.LoadTranslator(this.settings.lang_en?"lang:lang_en":"lang:lang_cn");
@@ -543,7 +549,7 @@ class CMainDlg extends soui4.JsHostDialog {
 		this.vodPlayer.onPlayPosition = this.onPlayPosition;
 		this.vodPlayer.onRecordStart = this.onRecordStart;
 		this.vodPlayer.onRecordStop = this.onRecordStop;
-		this.vodPlayer.EnableLog(true);//enable or disable vodplayer's log
+		this.vodPlayer.EnableLog(this.settings.enable_vod_log);
 		let sdlPresenter = jsplayer.CreateSdlPresenter(this);
 		this.SetPresenter(sdlPresenter);
 		this.vodPlayer.Init(sdlPresenter);

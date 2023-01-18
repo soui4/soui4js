@@ -10,6 +10,9 @@ using namespace SOUI;
 
 void Exp_SEnum(qjsbind::Module* module){
 //soui events
+SEnum(EVT_INIT);
+SEnum(EVT_EXIT);
+SEnum(EVT_TIMER);
 SEnum(EVT_SETFOCUS);
 SEnum(EVT_KILLFOCUS);
 SEnum(EVT_CREATE);
