@@ -97,11 +97,7 @@ namespace SOUI
             js_std_eval_binary(m_context->context(), (uint8_t*)buf, nReaded, 0);
         }
         else {
-            SStringA strFile(pszScriptFile);
-            int pos = strFile.ReverseFind('\\');
-            if(pos!=-1)
-                strFile = strFile.Mid(pos + 1);
-            val = m_context->Eval(buf, nReaded, strFile.c_str(), JS_EVAL_TYPE_MODULE);
+            val = m_context->Eval(buf, nReaded, pszScriptFile, JS_EVAL_TYPE_MODULE);
         }
         free(buf);
         if (val.IsException()) {
