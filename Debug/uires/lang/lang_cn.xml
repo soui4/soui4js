@@ -3,8 +3,8 @@
   <context>
     <!--没有上下文的翻译及字符串表的翻译-->
     <message>
-      <source>SLivePlayer</source>
-      <translation>聚合直播播放器</translation>
+      <source>XLivePlayer</source>
+      <translation>聚播</translation>
     </message>
     <message>
       <source>About</source>

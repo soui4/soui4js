@@ -688,19 +688,28 @@ class CMainDlg extends soui4.JsHostDialog {
 			this.onBtnAbout(e);
 		}else if(evtId==soui4.EVT_CMD &&e.Sender().GetName()=="btn_settings"){
 			this.onBtnSettings();
-		}else if(evtId==soui4.EVT_MOUSE_HOVER &&e.Sender().GetName()=="wnd_room_bookmark") //EVT_MOUSE_HOVER
+		}else if(e.Sender().GetName()=="wnd_room_bookmark")
 		{
-			if(this.hideRoomListTimer!=undefined)
-			{
-				os.clearTimeout(this.hideRoomListTimer);
-				this.hideRoomListTimer=undefined;
-			}
-			if(!this.showRoom && this.showRoomListTimer==undefined)
-				this.showRoomListTimer = os.setTimeout(function(){
-					this.switchRoomList(true);
+			if(evtId == soui4.EVT_MOUSE_HOVER){
+				if(this.hideRoomListTimer!=undefined)
+				{
+					os.clearTimeout(this.hideRoomListTimer);
+					this.hideRoomListTimer=undefined;
+				}
+				if(!this.showRoom && this.showRoomListTimer==undefined)
+					this.showRoomListTimer = os.setTimeout(function(){
+						this.switchRoomList(true);
+						this.showRoomListTimer=undefined;
+					},50,this);
+			}else if(evtId == soui4.EVT_MOUSE_LEAVE){
+				if(this.showRoomListTimer!=undefined)
+				{
+					os.clearTimeout(this.showRoomListTimer);
 					this.showRoomListTimer=undefined;
-				},50,this);
-		}else if(evtId == soui4.EVT_MOUSE_LEAVE && e.Sender().GetName()=="wnd_roomlist_container")//EVT_MOUSE_LEAVE
+				}
+			}
+
+		}else if(evtId == soui4.EVT_MOUSE_LEAVE && e.Sender().GetName()=="wnd_roomlist_container")
 		{
 			if(this.showRoomListTimer!=undefined)
 			{
@@ -711,11 +720,11 @@ class CMainDlg extends soui4.JsHostDialog {
 				this.hideRoomListTimer = os.setTimeout(function(){
 					this.switchRoomList(false);
 					this.hideRoomListTimer = undefined;
-				},50,this);			
-		}else if(evtId==soui4.EVT_MOUSE_HOVER &&e.Sender().GetName()=="wnd_root") //EVT_MOUSE_HOVER
+				},50,this);		
+		}else if(evtId==soui4.EVT_MOUSE_HOVER &&e.Sender().GetName()=="wnd_root")
 		{
 			this.switchCtrlPane(true);
-		}else if(evtId == soui4.EVT_MOUSE_LEAVE && e.Sender().GetName()=="wnd_root")//EVT_MOUSE_LEAVE
+		}else if(evtId == soui4.EVT_MOUSE_LEAVE && e.Sender().GetName()=="wnd_root")
 		{
 			this.switchCtrlPane(false);
 		}

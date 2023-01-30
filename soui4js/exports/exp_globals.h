@@ -14,6 +14,10 @@ void Slog(const char* szLog) {
 	SLOGI2("qjs") << str.c_str();
 }
 
+void SDebugBreak(int id) {
+	(id);
+}
+
 void Slog2(const char* szLog,int level) {
 	SStringW str = S_CA2W(szLog, CP_UTF8);
 	SLOG("qjs",level) << str.c_str();
@@ -286,7 +290,8 @@ namespace SOUI {
 void Exp_Global(qjsbind::Module* module)
 {
 	module->ExportFunc("log", &Slog);
-	module->ExportFunc("log2", &Slog2);	
+	module->ExportFunc("DebugBreak", &SDebugBreak);
+	module->ExportFunc("log2", &Slog2);
 	module->ExportFunc("GetApp", &GetApp);
 	module->ExportFunc("GetActiveWindow", &GetActiveWnd);
 	module->ExportFunc("toWChar", &toWChar);

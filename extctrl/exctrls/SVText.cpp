@@ -5,6 +5,7 @@ SNSBEGIN
 
 SVText::SVText(void)
 {
+	m_bMsgTransparent = true;
 }
 
 SVText::~SVText(void)
