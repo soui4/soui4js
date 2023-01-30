@@ -507,7 +507,13 @@ class RoomTvAdapter extends soui4.STvAdapter{
 	uninit(){
 		//save favor list to db
 		let f = std.open("favor.json", "w");
-		let favorStr = JSON.stringify(this.favorList);
+		let favorList =[];
+		for(let i=0;i<this.favorList.length;i++){
+			//clear url and item component.
+			const { url,item, ...favor } = this.favorList[i];
+			favorList.push(favor);
+		}
+		let favorStr = JSON.stringify(favorList);
 		f.puts(favorStr);
 		f.close();
 
