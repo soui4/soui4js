@@ -32,6 +32,14 @@
       <source>paste</source>
       <translation>粘贴</translation>
     </message>
+    <message>
+      <source>delete</source>
+      <translation>删除</translation>
+    </message>
+    <message>
+      <source>select all</source>
+      <translation>全选</translation>
+    </message>
   </context>
   <context name="messagebox">
     <message>

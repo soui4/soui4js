@@ -19,11 +19,11 @@ translucent="1"
         </window>
         <window size="-2,-1" layout="gridlayout" interval="5" columnCount="2" gravity="fill">
           <text >soui4js：</text>
-          <edit readOnly="1" margin="1" colorBorder="@color/red" ncSkin="">https://github.com/soui4/soui4js</edit>
+          <edit size="0,-1" columnWeight="1" readOnly="1" margin="1" colorBorder="@color/red" ncSkin="">https://github.com/soui4/soui4js</edit>
           <text>soui4：</text>
-          <edit readOnly="1" margin="1" colorBorder="@color/red" ncSkin="">https://github.com/soui4/soui4</edit>
+          <edit size="0,-1" readOnly="1" margin="1" colorBorder="@color/red" ncSkin="">https://github.com/soui4/soui4</edit>
           <text >url api：</text>
-          <edit readOnly="1" margin="1" colorBorder="@color/red" ncSkin="">http://api.pyduck.com/live-api/get-url</edit>
+          <edit size="0,-1" readOnly="1" margin="1" colorBorder="@color/red" ncSkin="">http://api.pyduck.com/live-api/get-url</edit>
         </window>
     </window>
   </root>

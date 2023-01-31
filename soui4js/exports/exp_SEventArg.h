@@ -36,6 +36,16 @@ void Exp_SEventArg(qjsbind::Module* module) {
 	jsCls.AddGetSet("dwNewState", &EventSwndStateChanged::dwNewState);
 	DEF_CAST_IOBJ(module, EventSwndStateChanged); }
 
+	{JsClass<EventSwndCaptureChanged> jsCls = module->ExportClass<EventSwndCaptureChanged>("EventSwndCaptureChanged");
+	jsCls.Init(JsClass<IEvtArgs>::class_id());
+	jsCls.AddGetSet("bCaptured", &EventSwndCaptureChanged::bCaptured);
+	DEF_CAST_IOBJ(module, EventSwndCaptureChanged); }
+
+	{JsClass<EventSwndVisibleChanged> jsCls = module->ExportClass<EventSwndVisibleChanged>("EventSwndVisibleChanged");
+	jsCls.Init(JsClass<IEvtArgs>::class_id());
+	jsCls.AddGetSet("bVisible", &EventSwndVisibleChanged::bVisible);
+	DEF_CAST_IOBJ(module, EventSwndVisibleChanged); }
+
 	{JsClass<EventSwndAnimationStart> jsCls = module->ExportClass<EventSwndAnimationStart>("EventSwndAnimationStart");
 	jsCls.Init(JsClass<IEvtArgs>::class_id());
 	jsCls.AddGetSet("pAni", &EventSwndAnimationStart::pAni);
@@ -57,7 +67,6 @@ void Exp_SEventArg(qjsbind::Module* module) {
 	jsCls.AddGetSet("nFlags", &EventKeyDown::nFlags);
 	jsCls.AddGetSet("bCancel", &EventKeyDown::bCancel);
 	DEF_CAST_IOBJ(module, EventKeyDown); }
-
 
 	{JsClass<EventSwndUpdateTooltip> jsCls = module->ExportClass<EventSwndUpdateTooltip>("EventSwndUpdateTooltip");
 	jsCls.Init(JsClass<IEvtArgs>::class_id());

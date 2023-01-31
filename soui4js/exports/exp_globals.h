@@ -18,6 +18,14 @@ void SDebugBreak(int id) {
 	(id);
 }
 
+IWindow* GetCaptured(IObject* pObj) {
+	IWindow* pWnd = sobj_cast<SWindow>(pObj);
+	if (!pWnd) return 0;
+	SWND hCap = pWnd->GetCapture();
+	SWindow* pCap = SWindowMgr::GetWindow(hCap);
+	return (IWindow*)pCap;
+}
+
 void Slog2(const char* szLog,int level) {
 	SStringW str = S_CA2W(szLog, CP_UTF8);
 	SLOG("qjs",level) << str.c_str();
@@ -294,6 +302,7 @@ void Exp_Global(qjsbind::Module* module)
 	module->ExportFunc("log2", &Slog2);
 	module->ExportFunc("GetApp", &GetApp);
 	module->ExportFunc("GetActiveWindow", &GetActiveWnd);
+	module->ExportFunc("GetCaptured", &GetCaptured);
 	module->ExportFunc("toWChar", &toWChar);
 	module->ExportFunc("InitFileResProvider", &InitFileResProvider);
 	module->ExportFunc("InitPEResProvider", &InitPEResProvider);

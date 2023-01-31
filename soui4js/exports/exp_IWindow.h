@@ -1,5 +1,6 @@
 #pragma once
 #include <interface/SWindow-i.h>
+#include "toobj.h"
 
 void Exp_IWindow(qjsbind::Module* module)
 {
@@ -79,7 +80,7 @@ void Exp_IWindow(qjsbind::Module* module)
 	jsCls.AddFunc("GetIWindow", &IWindow::GetIWindow);
 	jsCls.AddFunc("GetIChild", &IWindow::GetIChild);
 	jsCls.AddFunc("GetChildrenCount", &IWindow::GetChildrenCount);
-	jsCls.AddFunc("IsIDescendant", &IWindow::IsIDescendant);
+	jsCls.AddFunc("IsDescendant", &IWindow::IsDescendant);
 	jsCls.AddFunc("SetIOwner", &IWindow::SetIOwner);
 	jsCls.AddFunc("GetIOwner", &IWindow::GetIOwner);
 	jsCls.AddFunc("BringWindowToTop", &IWindow::BringWindowToTop);
@@ -122,4 +123,6 @@ void Exp_IWindow(qjsbind::Module* module)
 	jsCls.AddFunc("GetHostHwnd", &IWindow::GetHostHwnd);
 	jsCls.AddFunc("RegisterDragDrop", &IWindow::RegisterDragDrop);
 	jsCls.AddFunc("UnregisterDragDrop", &IWindow::UnregisterDragDrop);
+
+	DEF_CAST_IOBJ2(module, IWindow,SWindow);
 }
