@@ -175,6 +175,13 @@ class RoomTvAdapter extends soui4.STvAdapter{
 		return true;
 	}
 
+	getRoomCount(){
+		return this.favorList.length + 1 + this.roomList.length;
+	}
+
+	/*
+	 [room list] + favorRoot + [favor list]
+	*/
 	getRoomInfo(iRoom){
 		if(iRoom<this.roomList.length)
 		{
@@ -200,10 +207,18 @@ class RoomTvAdapter extends soui4.STvAdapter{
 
 		let img = pItem.FindIChildByName("img_state");
 		let iImg = soui4.QiIImageWnd(img);
+		let btnUrl = pItem.FindIChildByName("btn_go_offcial_url");
+		btnUrl.SetVisible(false,false);
+		soui4.SConnect(btnUrl,soui4.EVT_CMD,this,this.onGoOffcialUrl);
+
 		if(roomInfo.id <0 )
 		{
 			let expland = this.IsItemExpended(hItem);
 			iImg.SetIcon(expland?1:0);
+			if(roomInfo.url!="" && roomInfo.id==-2){
+				btnUrl.SetVisible(true,false);
+				btnUrl.SetAttributeA("url",roomInfo.url,0);
+			}
 		}else{
 			if(roomInfo.url==null)
 				iImg.SetIcon(2);//wait
@@ -218,6 +233,18 @@ class RoomTvAdapter extends soui4.STvAdapter{
 		iImg.Release();
 	}
 
+	onGoOffcialUrl(e){
+		let pItem = soui4.toSWindow(e.Sender());
+		let itemApi = soui4.QiIItemPanel(pItem.GetIRoot());
+		let hItem = itemApi.GetItemIndex();
+		itemApi.Release();
+		let iRoom = this.GetItemData(hItem);
+		let roomInfo = this.getRoomInfo(iRoom);
+		if(roomInfo.url!=""){
+			soui4.log("open url:"+roomInfo.url);
+			soui4.shellExecute(0,"open",roomInfo.url,0,0,10);//10= SW_SHOWDEFAULT
+		}
+	}
 	onItemRClick(e){
 		let pItem = soui4.toSWindow(e.Sender());
 		let itemApi = soui4.QiIItemPanel(pItem);
@@ -323,7 +350,12 @@ class RoomTvAdapter extends soui4.STvAdapter{
 		}
 		soui4.log("initFavorList:"+itemFavorRoot);
 		this.notifyBranchChanged(soui4.STVI_ROOT);//notify whole tree data changed.
-		this.CheckRoomState(0);//check room state from 0 room
+
+		let roomCount = this.getRoomCount();
+		if(roomCount>1)
+		{
+			this.CheckRoomState(roomCount-1);//check room state from 0 room
+		}
 	}
 
 	onRoomListResp(ctx,code,resp){
@@ -336,6 +368,19 @@ class RoomTvAdapter extends soui4.STvAdapter{
 			let iRoom=0;
 			while(!xmlPlatform.IsEmpty()){
 				let platformName = xmlPlatform.Attribute("name",false).Value();
+				let platformDesc = platformName;
+				let descXml = xmlPlatform.Attribute("desc",false);
+				if(descXml !=0){
+				//todo:hjx, descXml was expected to 0 for some node.
+					platformDesc = descXml.Value();
+					if(platformDesc=="")
+						platformDesc = platformName;
+				}
+				let platformOffcialUrl = "";
+				let urlXml = xmlPlatform.Attribute("url",false);
+				if(urlXml != 0){
+					platformOffcialUrl = urlXml.Value();
+				}
 				let visible = xmlPlatform.Attribute("visible",false);
 				if(visible!=0){
 					visible=parseInt(visible.Value());
@@ -353,16 +398,14 @@ class RoomTvAdapter extends soui4.STvAdapter{
 				}
 
 
-				let itemPlatform= this.InsertItem(iRoom,soui4.STVI_ROOT,soui4.STVI_LAST); 
-				this.roomList[iRoom]={platform:platformName,id:-2,desc:platformName,"url_path":url_path,"item":itemPlatform,"url":null,"hot":0};//save item to roomList
-				iRoom++;
+				let itemPlatform= this.InsertItem(iRoom++,soui4.STVI_ROOT,soui4.STVI_LAST); 
+				this.roomList.push({platform:platformName,id:-2,desc:platformDesc,"url_path":url_path,"item":itemPlatform,"url":platformOffcialUrl,"hot":0});//save item to roomList
 				let xmlType=xmlPlatform.FirstChild();
 				
 				while(!xmlType.IsEmpty()){
 					let typeName=xmlType.FirstAttribute().Value();
-					let itemType= this.InsertItem(iRoom,itemPlatform,soui4.STVI_LAST); 
-					this.roomList[iRoom]={platform:platformName,id:-1,desc:typeName,"url_path":url_path,"item":itemType,"url":null,"hot":0};//save item to roomList
-					iRoom++;
+					let itemType= this.InsertItem(iRoom++,itemPlatform,soui4.STVI_LAST); 
+					this.roomList.push({platform:platformName,id:-1,desc:typeName,"url_path":url_path,"item":itemType,"url":null,"hot":0});//save item to roomList
 
 					let xmlRoom = xmlType.FirstChild();
 					while(!xmlRoom.IsEmpty()){
@@ -374,9 +417,8 @@ class RoomTvAdapter extends soui4.STvAdapter{
 						{
 							hot=parseInt(hotAttr.Value());
 						}
-						let item = this.InsertItem(iRoom,itemType,soui4.STVI_LAST);
-						this.roomList[iRoom]={platform:platformName,id:roomId,desc:roomDesc,"url_path":url_path,"item":item,"url":null,"hot":hot};//save item to roomList
-						iRoom++;
+						let item = this.InsertItem(iRoom++,itemType,soui4.STVI_LAST);
+						this.roomList.push({platform:platformName,id:roomId,desc:roomDesc,"url_path":url_path,"item":item,"url":null,"hot":hot});//save item to roomList
 						xmlRoom = xmlRoom.NextSibling();
 					}
 					
@@ -444,7 +486,7 @@ class RoomTvAdapter extends soui4.STvAdapter{
 			roomInfo.url="";//set url to empty.
 		}
 		this.notifyBranchInvalidated(roomInfo.item,false,false);
-		this.CheckRoomState(ctx+1);
+		this.CheckRoomState(ctx-1);
 	}
 
 	onCheckUrlErr(ctx,code){
@@ -453,7 +495,7 @@ class RoomTvAdapter extends soui4.STvAdapter{
 		roomInfo.url="";
 		this.notifyBranchInvalidated(roomInfo.item,false,false);
 		soui4.log("request url failed, code:"+code+" iRoom="+iRoom);
-		this.CheckRoomState(ctx+1);
+		this.CheckRoomState(ctx-1);
 	}
 
 	checkRoom(iRoom){
@@ -466,14 +508,16 @@ class RoomTvAdapter extends soui4.STvAdapter{
 		this.httpCheckUrl.onError = this.onCheckUrlErr;		
 		this.httpCheckUrl.SetOpaque(iRoom);
 		this.httpCheckUrl.Execute();
-		this.mainDlg.OnCheckRoomProg(iRoom);
+		this.mainDlg.OnCheckRoomProg(this.getRoomCount()-iRoom);
 	}
+
 	CheckRoomState(iRoom){
-		if(iRoom == 0){
-			this.mainDlg.OnCheckRoomStart(this.roomList.length + this.favorList.length +1);
+		let roomCount = this.getRoomCount();
+		if(iRoom == roomCount-1){
+			this.mainDlg.OnCheckRoomStart(roomCount);
 			this.isRefeshing = true;
 		}
-		if(iRoom== this.roomList.length + this.favorList.length +1)
+		if(iRoom < 0)
 		{
 			soui4.log("CheckRoomState finished!");
 			this.mainDlg.OnCheckRoomStop();
@@ -483,7 +527,7 @@ class RoomTvAdapter extends soui4.STvAdapter{
 		let roomInfo = this.getRoomInfo(iRoom);
 		if(roomInfo.id<=0)
 		{
-			this.CheckRoomState(iRoom+1);
+			this.CheckRoomState(iRoom-1);
 		}else{
 			this.checkRoom(iRoom);
 		}
@@ -501,7 +545,11 @@ class RoomTvAdapter extends soui4.STvAdapter{
 			this.favorList[i].url=null;
 		}
 		this.notifyBranchChanged(soui4.STVI_ROOT);
-		this.CheckRoomState(0);
+		let roomCount = this.getRoomCount();
+		if(roomCount>1)
+		{
+			this.CheckRoomState(roomCount-1);
+		}
 	}
 
 	uninit(){
