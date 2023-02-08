@@ -165,13 +165,14 @@ class RoomTvAdapter extends soui4.STvAdapter{
 			return false;
 		let newRoom = {...roomInfo};
 		newRoom.id = id;
+		newRoom.url = null;
 		newRoom.desc = platform+"/"+desc;
 		this.favorList.push(newRoom);
 		let iRoom = this.roomList.length + 1 + this.favorList.length -1;
 		let favorRoot = this.GetChildItem(soui4.STVI_ROOT,true);
 		newRoom.item = this.InsertItem(iRoom,favorRoot,soui4.STVI_LAST);
 		this.notifyBranchChanged(favorRoot);
-		this.checkRoom(iRoom);
+		this.checkRoom(iRoom,false);
 		return true;
 	}
 
@@ -476,8 +477,9 @@ class RoomTvAdapter extends soui4.STvAdapter{
 	}
 
 	onCheckUrlResp(ctx,code,resp){
-		let iRoom = ctx;
-		soui4.log("request url succeed, iRoom="+iRoom+" code:"+code+" resp:"+resp);
+		let iRoom = ctx&0x7fffffff;
+		let bFetchAll = (ctx & 0x80000000)==0;
+		soui4.log("request url succeed, iRoom="+iRoom+" code:"+code+" resp:"+resp + " fetchall:"+bFetchAll);
 		let url = this.getUrlFromResp(iRoom,resp);
 		let roomInfo = this.getRoomInfo(iRoom);
 		if(url!=null && url.substr(0,4)=="http"){
@@ -486,27 +488,33 @@ class RoomTvAdapter extends soui4.STvAdapter{
 			roomInfo.url="";//set url to empty.
 		}
 		this.notifyBranchInvalidated(roomInfo.item,false,false);
-		this.CheckRoomState(ctx-1);
+		if(bFetchAll)
+			this.CheckRoomState(ctx-1);
 	}
 
 	onCheckUrlErr(ctx,code){
-		let iRoom = ctx;
+		let iRoom = ctx&0x7fffffff;
+		let bFetchAll = (ctx & 0x80000000)==0;
+		soui4.log("request url failed, code:"+code+" iRoom="+iRoom+ " fetchall:"+bFetchAll);
+
 		let roomInfo = this.getRoomInfo(iRoom);
 		roomInfo.url="";
 		this.notifyBranchInvalidated(roomInfo.item,false,false);
-		soui4.log("request url failed, code:"+code+" iRoom="+iRoom);
-		this.CheckRoomState(ctx-1);
+		if(bFetchAll)
+			this.CheckRoomState(ctx-1);
 	}
 
-	checkRoom(iRoom){
+	checkRoom(iRoom,bFetchAll){
 		let roomInfo = this.getRoomInfo(iRoom);
 		let url = "http://api.pyduck.com/live-api/get-url?live_platform="+roomInfo.platform+"&parameter="+roomInfo.id;
 		soui4.log("checkRoom,url="+url);
 		this.httpCheckUrl = new soui4.HttpRequest(url,"get");
 		this.httpCheckUrl.cbHandler=this;
 		this.httpCheckUrl.onResp = this.onCheckUrlResp;
-		this.httpCheckUrl.onError = this.onCheckUrlErr;		
-		this.httpCheckUrl.SetOpaque(iRoom);
+		this.httpCheckUrl.onError = this.onCheckUrlErr;
+		let data = iRoom;
+		if(!bFetchAll) data |= 0x80000000;
+		this.httpCheckUrl.SetOpaque(data);
 		this.httpCheckUrl.Execute();
 		this.mainDlg.OnCheckRoomProg(this.getRoomCount()-iRoom);
 	}
@@ -529,7 +537,7 @@ class RoomTvAdapter extends soui4.STvAdapter{
 		{
 			this.CheckRoomState(iRoom-1);
 		}else{
-			this.checkRoom(iRoom);
+			this.checkRoom(iRoom,true);
 		}
 	}
 
