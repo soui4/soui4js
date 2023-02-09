@@ -18,6 +18,10 @@
       <source>Settings</source>
       <translation>设置</translation>
     </message>
+    <message>
+      <source>close</source>
+      <translation>关闭窗口</translation>
+    </message>    
   </context>
   <context name="editmenu">
     <message>
@@ -61,10 +65,6 @@
       <translation>输入视频url</translation>
     </message>
     <message>
-      <source>close</source>
-      <translation>关闭窗口</translation>
-    </message>
-    <message>
       <source>play file or url</source>
       <translation>播放视频文件或者URL</translation>
     </message>
@@ -92,6 +92,34 @@
       <source>Room List</source>
       <translation>房间列表</translation>
     </message>
+    <message>
+   	<source>www</source>
+      <translation>官网</translation>
+    </message>
+    <message>
+   	<source>open platform website</source>
+       <translation>打开平台官网</translation>
+    </message>   
+    <message>
+   	<source>add room</source>
+       <translation>增加自定义房间</translation>
+    </message> 
+     <message>
+   	<source>refresh room state</source>
+       <translation>刷新房间状态</translation>
+    </message>   
+      <message>
+   	<source>stop</source>
+       <translation>停止</translation>
+    </message>   
+         <message>
+   	<source>pause</source>
+       <translation>暂停</translation>
+    </message>   
+         <message>
+   	<source>resume</source>
+       <translation>继续</translation>
+    </message>      
   </context>
   <context name="dlg_settings">
      <message>
