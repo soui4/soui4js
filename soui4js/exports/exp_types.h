@@ -59,7 +59,7 @@ namespace qjsbind {
 	}
 
 	template<>
-	inline Value NewValue(Context& context, const wchar_t* v) {
+	Value NewValue(Context& context, const wchar_t* v) {
 		if (!v) {
 			v = L"";
 		}
@@ -121,11 +121,30 @@ namespace qjsbind {
 
 	template<>
 	WeakValue::operator char() const {
-		return (char)ToInt32();
+		if(IsNumber())
+			return (char)ToInt32();
+		if (!IsString())
+			return 0;
+		size_t len = 0;
+		const char* str = JS_ToCStringLen(context_, &len, value_);
+		if (len != 1)
+			return 0;
+		return *str;
 	}
+
 	template<>
 	WeakValue::operator wchar_t() const {
-		return (wchar_t)ToInt32();
+		if (IsNumber())
+			return (wchar_t)ToInt32();
+		if (!IsString())
+			return 0;
+		size_t len = 0;
+		const char* str = JS_ToCStringLen(context_, &len, value_);
+		if (len > 3)
+			return 0;
+		wchar_t ret;
+		MultiByteToWideChar(CP_UTF8, 0, str, len, &ret, 1);
+		return ret;
 	}
 
 	template<>

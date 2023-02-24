@@ -292,7 +292,6 @@ namespace qjsbind {
 				return NULL;
 			return JS_ToCStringLen(context_, NULL, value_);
 		}
-		operator const wchar_t* () const;
 
 		uint8_t* ToBuffer(size_t* psize) const;
 
