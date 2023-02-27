@@ -16,7 +16,7 @@ private:
 	map<string, string> m_headers;
 	SAutoRefPtr<IMessageLoop> m_msgLoop;
 	BOOL m_bAsync;
-	BOOL m_bCanceled;
+	volatile BOOL m_bCanceled;
 	int  m_timeout[3];
 	int  m_opaque;
 	HANDLE m_evt;
@@ -109,6 +109,13 @@ public:
 
 	BOOL Execute() {
 		return Run(NULL);
+	}
+
+	void Cancel() {
+		if (m_bAsync) {
+			m_bCanceled = TRUE;
+			WaitForSingleObject(m_evt, INFINITE);
+		}
 	}
 protected:
 	BOOL Run(LPCSTR pszFileName) {
@@ -211,6 +218,7 @@ void Exp_HttpRequest(qjsbind::Module* module) {
 	jsCls.AddFunc("Execute", &HttpRequest::Execute);
 	jsCls.AddFunc("DownloadFile", &HttpRequest::DownloadFile);
 	jsCls.AddFunc("SetOpaque", &HttpRequest::SetOpaque);
+	jsCls.AddFunc("Cancel", &HttpRequest::Cancel);
 	jsCls.AddGetSet("cbHandler", &HttpRequest::m_cbHandler);
 	jsCls.AddGetSet("onResp", &HttpRequest::m_onResp);
 	jsCls.AddGetSet("onError", &HttpRequest::m_onError);
