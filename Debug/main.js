@@ -350,6 +350,7 @@ class RoomTvAdapter extends soui4.STvAdapter{
 			this.favorList[i].item = itemFavor;
 		}
 		soui4.log("initFavorList:"+itemFavorRoot);
+		this.SetItemExpended(itemFavorRoot,true);
 		this.notifyBranchChanged(soui4.STVI_ROOT);//notify whole tree data changed.
 
 		let roomCount = this.getRoomCount();
